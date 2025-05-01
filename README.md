@@ -7,7 +7,7 @@ javascript:(function(){const t=["copy","cut","paste","selectstart","contextmenu"
 
 ## REDAÇÃO V2
 ```js
-javascript:fetch("EM TESTES").then(t=>t.text()).then(eval);
+javascript:fetch("https://res.cloudinary.com/dctxcezsd/raw/upload/v1746140388/redacaov2.js").then(t=>t.text()).then(eval);
 ```
 
 ## REDAÇÃO V3
