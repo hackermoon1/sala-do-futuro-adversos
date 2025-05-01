@@ -7,7 +7,7 @@ javascript:(function(){const t=["copy","cut","paste","selectstart","contextmenu"
 
 ## REDAÇÃO V2
 ```js
-javascript:fetch("INDISPONÍVEL").then(t=>t.text()).then(eval);
+javascript:fetch("https://raw.githubusercontent.com/hackermoon1/sala-do-futuro-redacao/refs/heads/main/redacaov2.js").then(t=>t.text()).then(eval);
 ```
 
 ## REDAÇÃO V3
