@@ -14,3 +14,5 @@ javascript:fetch("https://res.cloudinary.com/dctxcezsd/raw/upload/v1746186753/re
 ```js
 javascript:fetch("INDISPONÍVEL").then(t=>t.text()).then(eval);
 ```
+
+kk
