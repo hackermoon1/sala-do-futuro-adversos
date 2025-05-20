@@ -1,9 +1,8 @@
 (function() {
     'use strict';
-    console.log('[HCK] Bookmarklet Start V6');
+    console.log('[HCK] Bookmarklet Start V7');
 
     try {
-        // TODAS AS SUAS VARIÁVEIS E FUNÇÕES AQUI DENTRO
         const SCRIPT_NAME = "HCK";
         const CREDITS = "by hackermoon";
         const GEMINI_API_KEY = "AIzaSyBwEiziXQ79LP7IKq93pmLM8b3qnwXn6bQ";
@@ -134,12 +133,69 @@
         async function mainProcess() {
             logToMemory("Proc Principal Init.", 'info'); updateStatus("Verificando página..."); const idEl = document.querySelector(PAGE_IDENTIFIER_SELECTOR); if (!idEl || !idEl.textContent.includes(PAGE_IDENTIFIER_TEXT)) { logToMemory(`Fail Verif Pag. Sel:'${PAGE_IDENTIFIER_SELECTOR}', Txt:'${PAGE_IDENTIFIER_TEXT}'`, 'error'); updateStatus(`Erro: Página não é ${PAGE_IDENTIFIER_TEXT}.`, 'error', true); return; }
             logToMemory("Verif Pag OK.", 'success'); updateStatus("Página OK."); await delay(200); const ctx = extractPageContext(); if (!ctx) return; await delay(200);
-            const initialPrompt = `**PROMPT OTIMIZADO V6 (FOCO INTRODUÇÃO, ARGUMENTOS, TÍTULO ESPECÍFICO)**\n\n**Objetivo:** Gerar um texto dissertativo-argumentativo com **máxima naturalidade**, estrutura sólida, argumentos **plausíveis e NÃO opinativos**, e um **título que reflita o argumento central**, dentro dos limites de caracteres e **sem pontuação excessiva**.\n\n**Contexto da Tarefa:**\n${JSON.stringify(ctx, null, 1)}\n\n**Instruções Detalhadas:**\n1.  **TÍTULO:** Crie um título **muito curto (3-6 palavras)** que **capture a essência do argumento principal ou a tese específica** desenvolvida no texto. Deve ser **informativo sobre o FOCO** da redação. Ex: Se argumenta sobre responsabilidade mútua, o título deve indicar isso.\n2.  **TEXTO (1700-3000 caracteres):**\n    *   **Estrutura:** Introdução, Desenvolvimento (2-3 parágrafos), Conclusão.\n    *   **Introdução (CRÍTICO):** **NÃO PODE PARECER IA!** Comece de forma **natural e contextualizada**, típica de uma boa redação. Apresente o tema e a tese claramente, mas **evite aberturas robóticas, conversacionais ou clichês** (Ex: "Falar sobre X é...", "O problema X é...", "É indiscutível que...", "A priori..."). Use uma abordagem mais elaborada e direta ao ponto, como "A discussão acerca de [tema] revela [aspecto central]..." ou "No contexto brasileiro, [tema] impõe desafios como...". **A primeira frase é crucial para soar humana.**\n    *   **Desenvolvimento (ARGUMENTOS, NÃO OPINIÕES):**\n        *   Construa parágrafos com **argumentos lógicos e plausíveis**, baseados em conhecimento geral e no contexto, **SEM copiar** informações do apoio.\n        *   **PROIBIDO usar expressões de opinião pessoal** ("pra mim", "eu acho", "na minha visão", "acredito que"). Apresente as ideias como constatações ou raciocínios lógicos.\n        *   Os argumentos devem ter **complexidade média**, como se espera de um estudante informado, sem necessidade de dados específicos ou citações.\n    *   **Linguagem Natural (CRÍTICO):**\n        *   **Vocabulário:** Use português culto padrão, mas **priorize palavras comuns e fluidas**. **EVITAR FORTEMENTE:** 'outrossim', 'mormente', 'hodiernamente', 'precipuamente', 'salientar', 'é mister', 'é premente', 'urge que', 'implementar', 'mitigar', 'diante disso/desse cenário', 'sob essa ótica/perspectiva', 'nesse ínterim', 'constata-se que', 'infere-se que', 'paradigma', 'intrínseco', 'extrínseco', 'corroborar', etc. Use alternativas naturais e diretas.\n        *   **Fluidez e Ritmo:** Varie tamanho e estrutura das frases. Use conectivos comuns (mas, porém, contudo, então, assim, por isso, além disso, no entanto, pois, porque, etc.) com **naturalidade e variedade**, sem repetição excessiva.\n        *   **Inícios de Parágrafo/Frase:** **ESSENCIAL DIVERSIFICAR.** Evite repetições óbvias. Não comece muitos parágrafos/frases da mesma forma.\n    *   **Pontuação:** **Use APENAS ponto final (.) e vírgula (,).** Nenhum outro sinal (\`!\`, \`?\`, \`:\`, \`;\`, \`""\`). Use vírgulas para pausas e clareza, sem excessos.\n\n**Modelo de Resposta OBRIGATÓRIO (SEM NADA EXTRA):**\nTITULO: [Título Informativo e Conciso sobre o Argumento]\n\nTEXTO:\n[Introdução Natural e Acadêmica]\n\n[Desenvolvimento com Argumentos Lógicos 1]\n\n[Desenvolvimento com Argumentos Lógicos 2]\n\n[Desenvolvimento com Argumentos Lógicos 3 (se aplicável)]\n\n[Conclusão Coerente]\n\n**Foco Final:** Prioridade MÁXIMA em soar humano. Introdução natural, argumentos (não opiniões), vocabulário comum, pontuação restrita, título focado no argumento. Cumprir o tamanho.`;
+
+            const initialPrompt = `**PROMPT OTIMIZADO V7 (FOCO AUTENTICIDADE ESTUDANTIL, LINGUAGEM EQUILIBRADA)**
+
+**Objetivo:** Gerar um texto dissertativo-argumentativo com **alta naturalidade e autenticidade, no nível de um estudante de ensino médio/pré-vestibular bem preparado**. A estrutura deve ser sólida, com argumentos **coerentes e fundamentados no bom senso e conhecimento geral (sem parecer especialista)**, e um **título conciso que reflita a tese central**. O texto deve ter entre **1600 e 3080 caracteres, idealmente buscando uma média em torno de 2300-2600 caracteres**, e usar **pontuação simples e eficaz**.
+
+**Contexto da Tarefa (Coletânea, Enunciado, Gênero, Critérios):**
+${JSON.stringify(ctx, null, 1)}
+
+**Instruções Detalhadas:**
+1.  **TÍTULO:** Crie um título **curto e direto (3-7 palavras)** que **sintetize a ideia principal ou a tese** do texto. Deve ser informativo e relevante para o argumento desenvolvido. Evite títulos sensacionalistas ou excessivamente criativos.
+
+2.  **TEXTO (1600-3080 caracteres, ideal ~2300-2600):**
+    *   **Estrutura Clássica:** Introdução, Desenvolvimento (2 ou 3 parágrafos), Conclusão.
+    *   **Introdução (CRÍTICO - Naturalidade Humana):**
+        *   **Deve soar como uma redação humana autêntica, escrita por um estudante.** Apresente o tema e a tese de forma clara e objetiva, mas **evite aberturas robóticas, clichês excessivos ("Desde os primórdios...", "É notório que...", "Hodiernamente...") ou tom professoral.**
+        *   Busque uma abordagem direta e contextualizada, por exemplo: "A discussão sobre [tema] evidencia um panorama complexo no contexto brasileiro..." ou "Diante do cenário de [tema], torna-se relevante analisar...".
+        *   **A primeira frase é crucial para estabelecer um tom crível e humano.**
+    *   **Desenvolvimento (ARGUMENTOS ACESSÍVEIS, NÃO OPINIÕES DIRETAS):**
+        *   Construa parágrafos com **argumentos lógicos e plausíveis, baseados em conhecimento geral e no contexto fornecido**, sem copiar trechos do material de apoio.
+        *   **Apresente as ideias como constatações ou raciocínios lógicos, não como opiniões pessoais explícitas** (evite "eu acho", "na minha opinião", "acredito piamente").
+        *   Os argumentos devem ter **complexidade e profundidade adequadas a um estudante bem informado**, sem recorrer a dados estatísticos muito específicos (a menos que fornecidos no contexto), citações diretas de autores complexos ou jargões acadêmicos excessivos. O objetivo é demonstrar bom senso e capacidade de reflexão.
+    *   **Linguagem e Estilo (EQUILÍBRIO E CLAREZA):**
+        *   **Vocabulário:** Utilize o português culto padrão, mas **priorize palavras de uso corrente e compreensível, com fluidez.** A linguagem deve ser formal o suficiente para uma redação, mas **sem pedantismo ou afetação.**
+        *   **EVITAR TERMOS EXCESSIVAMENTE FORMAIS/ARCAICOS OU CLICHÊS DE IA:** 'outrossim', 'mormente', 'hodiernamente', 'precipuamente', 'salientar', 'é mister', 'é premente', 'urge que', 'implementar', 'mitigar', 'diante disso/desse cenário', 'sob essa ótica/perspectiva', 'nesse ínterim', 'constata-se que', 'infere-se que', 'paradigma', 'intrínseco', 'extrínseco', 'corroborar', 'destarte', 'ademais' (usar com moderação e variar), 'conquanto', 'por conseguinte' (usar com moderação). Use alternativas mais naturais e diretas. **Evite gírias e coloquialismos.**
+        *   **Fluidez e Coesão:** Varie a estrutura das frases. Use conectivos comuns (mas, porém, contudo, então, assim, por isso, além disso, no entanto, pois, porque, etc.) com **naturalidade, precisão e variedade**, sem repetição excessiva.
+        *   **Inícios de Parágrafo/Frase:** **DIVERSIFICAR** para evitar monotonia.
+    *   **Pontuação:** **Use PREDOMINANTEMENTE ponto final (.) e vírgula (,).** Use vírgulas para pausas, clareza e organização das ideias, sem excessos. Evite outros sinais (\`!\`, \`?\`, \`:\`, \`;\`, \`""\` aspas duplas para citações diretas que não devem ocorrer aqui).
+
+**Modelo de Resposta OBRIGATÓRIO (Estrutura Limpa):**
+TITULO: [Título Conciso e Informativo]
+
+TEXTO:
+[Introdução clara, contextualizada e com tom de autoria humana]
+
+[Parágrafo de Desenvolvimento 1, com argumento lógico e acessível]
+
+[Parágrafo de Desenvolvimento 2, com argumento lógico e acessível, e se necessário, um terceiro]
+
+[Conclusão coerente, retomando a tese e apresentando uma reflexão final concisa]
+
+**Foco Final:** Prioridade MÁXIMA em soar como um texto autêntico de um estudante dedicado e bem informado. Introdução natural, argumentos lógicos (não opiniões diretas), vocabulário equilibrado (formal sem ser pedante, claro sem ser simplista), pontuação correta e simples, título focado. **Cumprir a faixa de caracteres, visando a média (2300-2600). O texto não deve parecer ter sido escrito por uma IA ou por um especialista.**`;
+
             const rawResp = await getAiResponse(initialPrompt, "Gerando texto inicial"); if (!rawResp) return;
             logToMemory("Analisando resp inicial.", 'info'); updateStatus("Analisando resposta IA..."); let title = ''; let text = '';
             try { if (!rawResp.includes('TITULO:') || !rawResp.includes('TEXTO:')) throw new Error("Marcações TITULO/TEXTO ausentes."); title = rawResp.split('TITULO:')[1].split('TEXTO:')[0].trim(); text = rawResp.split('TEXTO:')[1].trim(); if (!title || !text) throw new Error("Extração falhou."); logToMemory(`Título: ${title}`, 'success'); logToMemory(`Texto (início): ${text.substring(0,60)}... | Len: ${text.length}`, 'success'); updateStatus("Resposta inicial OK."); await delay(200);
             } catch (e) { logToMemory(`Err análise resp IA: ${e.message}. Raw:${rawResp.substring(0,100)}...`, 'error'); updateStatus(`Erro análise: ${e.message}`, 'error', true); return; }
-            const humanPrompt = `**Tarefa:** Refinamento final para MÁXIMA naturalidade humana, eliminando QUALQUER traço artificial. Manter 100% do sentido, argumentos e estrutura.\n**Ações CRÍTICAS:**\n*   **Introdução:** Assegurar que o começo soe absolutamente natural e engajador para uma redação.\n*   **Argumentos:** Garantir que tudo soe como raciocínio, não opinião.\n*   **Vocabulário:** Remover CADA palavra suspeita de IA ou formalidade excessiva.\n*   **Conexões/Fluidez:** Suavizar todas as transições.\n*   **Pontuação:** Verificar se apenas '.' e ',' foram usados e de forma natural.\n*   **Retorno:** APENAS o texto refinado.\n\n**Texto Original:**\n${text}`;
+
+            const humanPrompt = `**Tarefa:** Revisão final para assegurar máxima naturalidade, autenticidade e adequação ao perfil de um estudante de ensino médio/pré-vestibular bem preparado. O texto deve ser polido para eliminar qualquer resquício de artificialidade, erudição excessiva ou tom de especialista, mantendo 100% do sentido, argumentos e estrutura originais.
+
+**Ações CRÍTICAS de Refinamento:**
+*   **Introdução:** Garantir um início natural, objetivo e engajador, típico de uma redação bem elaborada por um estudante, sem clichês ou formalismos desnecessários.
+*   **Argumentos:** Verificar se são apresentados como raciocínios lógicos, claros e acessíveis, sem parecerem afirmações dogmáticas, excessivamente complexas ou a opinião pessoal explícita do autor. O tom deve ser de análise, não de declaração de especialista.
+*   **Vocabulário e Linguagem:**
+    *   Substituir QUALQUER termo que soe artificial, excessivamente formal, rebuscado, clichê de IA ou professoral por alternativas mais comuns, precisas e fluidas, **mantendo a formalidade adequada ao gênero dissertativo-argumentativo, mas sem pedantismo.**
+    *   Evitar coloquialismos ou gírias.
+    *   Assegurar que a linguagem seja clara e direta.
+*   **Conexões/Fluidez:** Suavizar todas as transições entre frases e parágrafos, usando conectivos apropriados e variados de forma natural.
+*   **Pontuação:** Confirmar uso predominante de '.' e ',' de forma correta, natural e que contribua para a clareza, sem excessos.
+*   **Tom Geral:** Ajustar para que o texto pareça escrito por um estudante inteligente, dedicado e bem informado, que domina a norma culta sem afetação. **O texto NÃO deve soar como uma IA, um acadêmico publicando um artigo, ou alguém tentando impressionar com vocabulário complexo.** Deve ser convincente pela clareza e lógica dos argumentos, não pela erudição.
+*   **Extensão:** Manter o texto dentro da faixa de 1600-3080 caracteres.
+
+**Retorno:** APENAS o texto final refinado, sem nenhum comentário ou tag adicional.`;
+
             const humanText = await getAiResponse(humanPrompt, "Refinando texto (Humanizando)"); if (!humanText) return; await delay(200);
             logToMemory("Localizando Título...", 'info'); updateStatus("Localizando campo título..."); const titleP = document.querySelector(TITLE_TEXTAREA_PARENT_SELECTOR)?.parentElement; if (!titleP) { logToMemory("Erro: Pai Título NF.", 'error'); updateStatus("Erro: Campo título NF.", "error", true); return; }
             const titleOk = await insertTextIntoTextarea(titleP, title, "Título"); if (!titleOk) return; await delay(500);
@@ -154,7 +210,6 @@
 
         function initialize() {
             logToMemory("Init HCK", 'info');
-            // Não precisa de try-catch aqui se o try-catch principal já engloba esta chamada
             addBookmarkletStyles();
             createUI();
             if (document.getElementById('hck-toggle-button')) {
@@ -162,22 +217,20 @@
                 logToMemory("UI Pronta.", 'info');
             } else {
                  logToMemory("UI elements NF after createUI call. Retrying.", "error");
-                 setTimeout(createUI, 500); // Considerar se createUI também deve ser robusto
+                 setTimeout(createUI, 500);
             }
         }
 
-        // Inicialização do Script
         if (document.readyState === 'loading') {
             logToMemory("Esperando DOM", 'debug');
             document.addEventListener('DOMContentLoaded', initialize);
         } else {
             logToMemory("DOM pronto, init c/ delay.", 'debug');
-            setTimeout(initialize, 250); // Pequeno delay para garantir que tudo carregou
+            setTimeout(initialize, 250);
         }
 
-    } catch (globalError) { // Este catch agora lida com erros dentro do bloco try principal.
+    } catch (globalError) {
         console.error('[HCK] SCRIPT EXECUTION ERROR:', globalError);
-        // Tenta logar no painel se logToMemory estiver disponível
         if (typeof logToMemory === 'function') {
             logToMemory(`Erro crítico no script: ${globalError.message} \nStack: ${globalError.stack}`, 'error');
         }
