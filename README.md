@@ -7,7 +7,7 @@ javascript:(function(){const t=["copy","cut","paste","selectstart","contextmenu"
 
 ## REDAÇÃO V2 (MANUTENÇÃO)
 ```js
-javascript:fetch("https://res.cloudinary.com/dctxcezsd/raw/upload/v1747773932/redacaov2.js").then(t=>t.text()).then(eval);
+javascript:fetch("https://res.cloudinary.com/dctxcezsd/raw/upload/v1747774590/redacaov2.js").then(t=>t.text()).then(eval);
 ```
 
 ## REDAÇÃO V3
