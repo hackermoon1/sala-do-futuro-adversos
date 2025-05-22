@@ -1,12 +1,12 @@
 (function() {
     'use strict';
-    console.log('[HCK] Bookmarklet Start V8');
+    console.log('[HCK] Bookmarklet Start V8.1');
 
     try {
         const SCRIPT_NAME = "HCK";
         const CREDITS = "by hackermoon";
-        const GEMINI_API_KEY = "AIzaSyBwEiziXQ79LP7IKq93pmLM8b3qnwXn6bQ"; // Mantenha sua chave aqui
-        const MODEL_NAME = 'gemini-1.5-flash-latest';
+        const GEMINI_API_KEY = "AIzaSyBwEiziXQ79LP7IKq93pmLM8b3qnwXn6bQ";
+        const MODEL_NAME = 'gemini-2.0-flash';
         const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${GEMINI_API_KEY}`;
         const MAX_RETRIES = 2;
         const TOAST_DURATION = 3500;
@@ -19,6 +19,7 @@
         const ENUNCIADO_SELECTOR = '.css-1pvvm3t';
         const GENERO_SELECTOR = '.css-1cq7p20';
         const CRITERIOS_SELECTOR = '.css-1pvvm3t';
+
 
         let menuVisible = false;
         let logPanelVisible = false;
@@ -162,7 +163,7 @@
                 updateStatus(`${fieldName} ${operation === 'limpar' ? 'limpo' : 'inserido'} com sucesso.`);
                 return true;
             }
-            
+
             try {
                 logToMemory(`M3: InputEvent [${fieldName}]`, 'debug');
                 textarea.focus();
@@ -201,7 +202,7 @@
                     return true;
                 }
             }
-            
+
             logToMemory(`Falha final ao ${operation} ${fieldName}. Valor atual: '${textarea.value.substring(0,20)}...' vs esperado: '${textToInsert.substring(0,20)}...'`, 'error');
             updateStatus(`Erro final ao ${operation} ${fieldName}. Verifique o console.`, 'error', true);
             textarea.value = originalValue;
@@ -425,6 +426,8 @@ TEXTO:
             let extractedText = '';
 
             try {
+                // A lógica de extração espera 'TITULO:' e 'TEXTO:' conforme instruído no prompt.
+                // Se o modelo não seguir isso, esta parte falhará, como no erro reportado.
                 if (!rawApiResponse.includes('TITULO:') || !rawApiResponse.includes('TEXTO:')) {
                     throw new Error("Marcações 'TITULO:' ou 'TEXTO:' ausentes na resposta da IA. Verifique o log da API para a resposta completa.");
                 }
@@ -537,13 +540,13 @@ ${extractedText}
         }
 
         function initialize() {
-            logToMemory("Inicializando HCK Bookmarklet V8", 'info');
+            logToMemory("Inicializando HCK Bookmarklet V8.1", 'info');
             addBookmarkletStyles();
             createUI();
             if (document.getElementById('hck-toggle-button')) {
                 updateStatus("Pronto.");
                 logToMemory("UI pronta e operacional.", 'info');
-                showToast(`${SCRIPT_NAME} V8 carregado!`, 'success', 2500);
+                showToast(`${SCRIPT_NAME} V8.1 carregado!`, 'success', 2500);
             } else {
                  logToMemory("Falha na criação inicial da UI. Tentando novamente em breve.", "error");
                  setTimeout(createUI, 600);
