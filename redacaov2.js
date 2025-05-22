@@ -1,12 +1,12 @@
 (function() {
     'use strict';
-    console.log('[HCK] Bookmarklet Start V8.1');
+    console.log('[HCK] Bookmarklet Start V9');
 
     try {
         const SCRIPT_NAME = "HCK";
         const CREDITS = "by hackermoon";
-        const GEMINI_API_KEY = "AIzaSyBwEiziXQ79LP7IKq93pmLM8b3qnwXn6bQ";
-        const MODEL_NAME = 'gemini-2.0-flash';
+        const GEMINI_API_KEY = "AIzaSyBwEiziXQ79LP7IKq93pmLM8b3qnwXn6bQ"; // Sua chave API aqui
+        const MODEL_NAME = 'gemini-2.0-flash'; // Modelo conforme solicitado
         const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${GEMINI_API_KEY}`;
         const MAX_RETRIES = 2;
         const TOAST_DURATION = 3500;
@@ -219,7 +219,7 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             contents: [{ parts: [{ text: prompt }] }],
-                            generationConfig: { temperature: 0.7, topP: 0.95, topK: 40, maxOutputTokens: 8192 }
+                            generationConfig: { temperature: 0.65, topP: 0.95, topK: 40, maxOutputTokens: 8192 } // Temperatura um pouco mais baixa
                         }),
                     });
                     if (!response.ok) {
@@ -369,107 +369,180 @@
             if (!pageContext) return;
             await delay(150);
 
-            const initialPrompt = `**PROMPT OTIMIZADO V8 (FOCO TOTAL EM AUTENTICIDADE ESTUDANTIL E LINGUAGEM NATURAL)**
+            const initialPrompt = `**PROMPT OTIMIZADO V9 (FOCO ABSOLUTO EM LINGUAGEM FORMAL, NATURAL E ESTUDANTIL AUTÊNTICA - SEM GÍRIAS OU COLOQUIALISMOS)**
 
-**Objetivo Primário:** Gerar um texto dissertativo-argumentativo que soe **extremamente natural e autêntico, como se escrito por um estudante de ensino médio/pré-vestibular dedicado e bem informado, NÃO por uma IA ou um especialista**. A linguagem deve ser culta, mas fluida e acessível. O título deve ser conciso e refletir a tese.
+**Objetivo Primário:** Gerar um texto dissertativo-argumentativo que soe **extremamente natural e autêntico, como se escrito por um estudante de ensino médio/pré-vestibular dedicado, bem informado e que domina a norma culta da língua portuguesa**. A linguagem deve ser formal, mas fluida, precisa e acessível, **EVITANDO COMPLETAMENTE qualquer tipo de gíria, coloquialismo excessivo, contrações informais ou tom de conversa.** O título deve ser conciso e refletir a tese.
 
 **Contexto da Tarefa (Coletânea, Enunciado, Gênero, Critérios Fornecidos):**
 ${JSON.stringify(pageContext, null, 1)}
 
-**Instruções Detalhadas para a Geração:**
+**Instruções Detalhadas para a Geração (REGRAS RÍGIDAS DE LINGUAGEM):**
 
 1.  **TÍTULO (OBRIGATÓRIO):**
-    *   Crie um título **curto, direto e informativo (idealmente 3 a 7 palavras)**.
+    *   Crie um título **curto (3-7 palavras), direto, formal e informativo**.
     *   Deve **sintetizar a ideia central ou a tese** do texto.
-    *   **EVITE:** Títulos sensacionalistas, excessivamente criativos, poéticos ou que pareçam manchetes. Deve ser sóbrio e acadêmico, no nível esperado para uma redação.
+    *   **EVITE:** Títulos que soem como manchetes, poéticos, ou excessivamente criativos. Deve ser sóbrio e acadêmico.
 
 2.  **TEXTO (2000-2800 caracteres, idealmente ~2400):**
     *   **Estrutura:** Introdução, Desenvolvimento (2 ou 3 parágrafos), Conclusão.
-    *   **Introdução (CRÍTICO PARA NATURALIDADE):**
-        *   **ABSOLUTAMENTE ESSENCIAL:** Deve soar como uma redação **humana e autêntica, escrita por um estudante**.
-        *   Apresente o tema e a tese de forma clara, objetiva, mas **FUJA DE INÍCIOS ROBÓTICOS, CLICHÊS BATIDOS ou frases de efeito que soem artificiais.**
-        *   **NÃO USE (exemplos de clichês a evitar):** "Desde os primórdios da humanidade...", "É notório que...", "Hodiernamente, muito se discute...", "Em um mundo cada vez mais...", "Sob uma primeira análise...", "Indubitavelmente...".
-        *   **BUSQUE:** Uma abordagem direta, contextualizada, por exemplo: "A questão de [tema] tem gerado debates significativos na sociedade brasileira..." ou "O cenário de [tema] impõe a necessidade de refletir sobre...".
-        *   **A PRIMEIRA FRASE É CRUCIAL para estabelecer um tom crível.**
-    *   **Desenvolvimento (ARGUMENTOS ACESSÍVEIS, SEM AFIRMAÇÕES CATEGÓRICAS DE ESPECIALISTA):**
-        *   Construa parágrafos com **argumentos lógicos, coerentes e plausíveis, baseados no bom senso, conhecimento geral e no contexto fornecido (sem copiar trechos do material de apoio)**.
-        *   **APRESENTE AS IDEIAS COMO CONSTATAÇÕES, ANÁLISES OU RACIOCÍNIOS LÓGICOS, NÃO COMO OPINIÕES PESSOAIS DIRETAS ("eu acho", "na minha visão") NEM COMO VERDADES ABSOLUTAS DE UM ESPECIALISTA.**
-        *   A profundidade deve ser adequada a um estudante bem informado, **sem recorrer a estatísticas complexas (a menos que fornecidas), citações diretas de filósofos/sociólogos pouco conhecidos pelo público geral, ou jargões acadêmicos excessivos.** O foco é demonstrar capacidade de reflexão crítica e uso do conhecimento de mundo de forma pertinente.
-    *   **Linguagem e Estilo (EQUILÍBRIO, CLAREZA E AUTENTICIDADE ESTUDANTIL):**
-        *   **Vocabulário:** Português culto padrão, mas **PRIORIZE palavras de uso CORRENTE, precisas e compreensíveis, com naturalidade.** A linguagem deve ser formal, mas **SEM PEDANTISMO, ARCAÍSMOS OU REBUSCAMENTO DESNECESSÁRIO.**
-        *   **TERMINANTEMENTE PROIBIDO USAR (ou usar com extrema parcimônia e apenas se MUITO natural):** 'outrossim', 'mormente', 'hodiernamente' (prefira 'atualmente', 'nos dias de hoje', ou reformule), 'precipuamente', 'salientar' (prefira 'destacar', 'ressaltar', 'apontar'), 'é mister', 'é premente', 'urge que', 'implementar' (prefira 'adotar', 'realizar', 'aplicar'), 'mitigar' (prefira 'reduzir', 'amenizar'), 'diante disso/desse cenário' (use com moderação, varie), 'sob essa ótica/perspectiva' (use com moderação, varie), 'nesse ínterim', 'constata-se que' (prefira voz ativa ou outras construções), 'infere-se que', 'paradigma', 'intrínseco', 'extrínseco', 'corroborar' (prefira 'confirmar', 'reforçar'), 'destarte', 'ademais' (use com moderação e varie), 'conquanto', 'por conseguinte' (use com moderação). **BUSQUE SINÔNIMOS MAIS NATURAIS E COMUNS.**
-        *   **Evite gírias e coloquialismos extremos.**
-        *   **Fluidez e Coesão:** Varie a estrutura das frases. Use conectivos comuns (mas, porém, contudo, no entanto, então, assim, por isso, além disso, pois, porque, etc.) com **NATURALIDADE, PRECISÃO E VARIEDADE**, sem repetição excessiva ou uso forçado.
-        *   **Inícios de Parágrafo/Frase:** **DIVERSIFICAR OBRIGATORIAMENTE** para evitar monotonia e soar como um template.
-    *   **Pontuação:** **Use PREDOMINANTEMENTE PONTO FINAL (.) e VÍRGULA (,).** Use vírgulas para pausas, clareza e organização das ideias, sem excessos e de forma correta. **EVITE USO EXCESSIVO de ponto e vírgula (;), dois pontos (:), travessões (—) ou aspas duplas ("") para citações (que não devem ser diretas e formais aqui).**
+    *   **Linguagem e Estilo (NÃO NEGOCIÁVEL - FORMALIDADE E NATURALIDADE ESTUDANTIL):**
+        *   **NORMA CULTA PADRÃO OBRIGATÓRIA:** Utilizar vocabulário preciso, variado e adequado ao contexto formal de uma redação.
+        *   **PROIBIDO TERMINANTEMENTE:**
+            *   **GÍRIAS E EXPRESSÕES COLOQUIAIS:** Nenhuma gíria (ex: 'galera', 'grana', 'tá ligado', 'tipo assim', 'parada', 'rolê', 'massa', 'zoado', 'pegar leve', 'dar um jeito', 'ficar de boa', 'pra caramba', 'um monte de').
+            *   **LINGUAGEM EXCESSIVAMENTE INFORMAL:** Evitar 'a gente' (preferir 'nós' ou construções impessoais/voz passiva), 'tá' (usar 'está'), 'pra' (usar 'para'), 'né?' (completamente proibido), 'tipo' como vício de linguagem, 'aí', 'então' como muletas.
+            *   **OPINIÕES DIRETAS E PESSOALIZAÇÃO EXCESSIVA:** Evitar 'eu acho', 'na minha opinião', 'pra mim', 'acredito que'. Apresentar ideias como análises, constatações ou inferências lógicas.
+        *   **VOCABULÁRIO:** Palavras de uso corrente na norma culta, com clareza e precisão. **SEM PEDANTISMO OU ARCAÍSMOS.** Evitar termos excessivamente rebuscados que soem artificiais para um estudante.
+        *   **TERMOS A EVITAR (ou usar com extrema moderação e apenas se muito natural e necessário, buscando alternativas mais comuns):** 'outrossim', 'mormente', 'hodiernamente' (prefira 'atualmente', 'nos dias atuais'), 'precipuamente', 'salientar' (prefira 'destacar', 'ressaltar'), 'é mister', 'é premente', 'urge que', 'implementar' (prefira 'adotar', 'realizar'), 'mitigar' (prefira 'reduzir', 'amenizar'), 'diante disso', 'sob essa ótica', 'nesse ínterim', 'constata-se que', 'infere-se que', 'paradigma', 'intrínseco', 'corroborar', 'destarte', 'ademais', 'conquanto', 'por conseguinte'. **Priorize fluidez e naturalidade.**
+        *   **Fluidez e Coesão:** Variar a estrutura das frases. Usar conectivos formais e variados (ex: mas, porém, contudo, todavia, no entanto, entretanto, assim, desse modo, por isso, além disso, ademais – com moderação, etc.) com naturalidade e precisão.
+        *   **Inícios de Parágrafo/Frase:** DIVERSIFICAR OBRIGATORIAMENTE para evitar repetição e tom mecânico.
+    *   **Introdução (FORMAL E NATURAL):**
+        *   Deve soar como uma redação **humana, formal e autêntica, escrita por um estudante proficiente na língua**.
+        *   Apresentar o tema e a tese de forma clara, objetiva. **FUJA DE CLICHÊS BATIDOS.**
+        *   **NÃO USE:** "Desde os primórdios...", "É notório que...", "Hodiernamente, muito se discute...", "Em um mundo cada vez mais...".
+        *   **BUSQUE:** Uma abordagem direta, contextualizada, por exemplo: "A problemática de [tema] suscita debates relevantes na sociedade contemporânea..." ou "O cenário de [tema] demanda uma reflexão acerca de...".
+    *   **Desenvolvimento (ARGUMENTOS LÓGICOS E BEM FUNDAMENTADOS):**
+        *   Construa parágrafos com argumentos lógicos, baseados em conhecimento geral e no contexto, **sem copiar trechos do material de apoio.**
+        *   A profundidade deve ser adequada a um estudante bem informado, sem recorrer a jargões excessivos.
+    *   **Pontuação:** Uso correto e predominante de PONTO FINAL (.) e VÍRGULA (,). Outros sinais (ponto e vírgula, dois pontos) devem ser usados com parcimônia e correção.
 
 **Modelo de Resposta OBRIGATÓRIO (Estrutura Limpa e Direta):**
-TITULO: [Título Conciso e Informativo Gerado]
+TITULO: [Título Conciso, Formal e Informativo Gerado]
 
 TEXTO:
-[Introdução natural, contextualizada, com tom de autoria de estudante.]
+[Introdução formal, natural, contextualizada, com tom de autoria de estudante proficiente.]
 
-[Parágrafo de Desenvolvimento 1, com argumento lógico, acessível e bem explicado.]
+[Parágrafo de Desenvolvimento 1, com argumento lógico, formal e bem explicado.]
 
-[Parágrafo de Desenvolvimento 2, com outro argumento lógico, acessível e bem explicado. Se necessário, um terceiro parágrafo de desenvolvimento pode ser adicionado, mantendo a mesma qualidade.]
+[Parágrafo de Desenvolvimento 2, com outro argumento lógico, formal e bem explicado. Se necessário, um terceiro.]
 
-[Conclusão coerente, retomando a tese de forma sutil e apresentando uma reflexão final ou uma breve sugestão (sem detalhar propostas de intervenção complexas, a menos que o gênero peça explicitamente).]
+[Conclusão coerente, retomando a tese e apresentando uma reflexão final concisa e formal.]
 
-**Foco Final e Inegociável:** O texto DEVE soar como um estudante talentoso, não uma IA. Prioridade MÁXIMA na naturalidade da introdução, argumentos que demonstrem reflexão (não erudição forçada), vocabulário equilibrado (culto, mas comum), pontuação simples e correta, título focado. **Cumprir a faixa de caracteres (2000-2800).**`;
+**Foco Final e Inegociável:** O texto DEVE soar como um estudante talentoso e proficiente na norma culta, NÃO uma IA, NÃO um especialista, e **DEFINITIVAMENTE NÃO alguém usando linguagem informal ou gírias.** Prioridade MÁXIMA na formalidade natural da introdução, argumentos lógicos, vocabulário culto e acessível, pontuação correta. Cumprir a faixa de caracteres.`;
 
             const rawApiResponse = await getAiResponse(initialPrompt, "Gerando texto base");
             if (!rawApiResponse) return;
 
             logToMemory("Analisando resposta inicial da IA...", 'info');
             updateStatus("IA: Analisando resposta...");
-            let extractedTitle = '';
-            let extractedText = '';
+            let extractedTitle = "";
+            let extractedText = "";
 
             try {
-                // A lógica de extração espera 'TITULO:' e 'TEXTO:' conforme instruído no prompt.
-                // Se o modelo não seguir isso, esta parte falhará, como no erro reportado.
-                if (!rawApiResponse.includes('TITULO:') || !rawApiResponse.includes('TEXTO:')) {
-                    throw new Error("Marcações 'TITULO:' ou 'TEXTO:' ausentes na resposta da IA. Verifique o log da API para a resposta completa.");
+                // Parsing mais robusto da resposta
+                const rawContent = rawApiResponse;
+                let textMarker = rawContent.match(/(?:TEXTO|TEXTO PRINCIPAL)\s*:\s*/i); // Case-insensitive
+
+                if (textMarker) {
+                    extractedText = rawContent.substring(textMarker.index + textMarker[0].length).trim();
+                    let titleSearchArea = rawContent.substring(0, textMarker.index);
+                    let titleMatch = titleSearchArea.match(/(?:TITULO|TÍTULO|\*\*TÍTULO\*\*)\s*:\s*([\s\S]*)/i); // Case-insensitive
+                    if (titleMatch && titleMatch[1]) {
+                        extractedTitle = titleMatch[1].trim();
+                    } else {
+                        logToMemory("Marcação TEXTO encontrada, mas TITULO não encontrada antes dela ou malformada.", "debug");
+                    }
+                } else {
+                    // No TEXTO marker. Does it have TITULO?
+                    let titleMatch = rawContent.match(/(?:TITULO|TÍTULO|\*\*TÍTULO\*\*)\s*:\s*([\s\S]*)/i);
+                    if (titleMatch && titleMatch[1]) {
+                        // Assume title is usually one line or short before the main text starts
+                        const potentialTitle = titleMatch[1].split('\n')[0].trim(); // Get first line as potential title
+                        extractedTitle = potentialTitle;
+
+                        // The rest after the full title match (label + content) is potential text
+                        let potentialTextAfterTitle = rawContent.substring(titleMatch.index + titleMatch[0].length).trim();
+                        if (potentialTextAfterTitle) {
+                            extractedText = potentialTextAfterTitle;
+                            logToMemory("Marcação TITULO encontrada, TEXTO não. Assumindo restante como texto.", "debug");
+                        } else if (titleMatch[1].trim().length > potentialTitle.length) {
+                            // If titleMatch[1] had multiple lines, the rest of it is the text
+                            extractedText = titleMatch[1].substring(potentialTitle.length).trim();
+                             logToMemory("Marcação TITULO encontrada, TEXTO não. Conteúdo multilinha do título assumido como texto.", "debug");
+                        }
+                        else {
+                             logToMemory("Marcação TITULO encontrada, mas sem conteúdo aparente para TEXTO depois.", "warn");
+                        }
+                    } else {
+                        // No TEXTO and no TITULO recognizable. Assume whole response is text.
+                        logToMemory("Nenhuma marcação TITULO/TEXTO reconhecível. Assumindo toda resposta como TEXTO.", "warn");
+                        extractedText = rawContent.trim();
+                    }
                 }
-                extractedTitle = rawApiResponse.split('TITULO:')[1].split('TEXTO:')[0].trim();
-                extractedText = rawApiResponse.split('TEXTO:')[1].trim();
-                if (!extractedTitle || !extractedText) {
-                    throw new Error("Falha ao extrair título ou texto da resposta da IA. Conteúdo pode estar malformado.");
+
+                // Final checks and cleanup
+                if (!extractedText && extractedTitle && extractedTitle.length > 300) { // If title is very long and text is empty
+                    logToMemory("Título longo detectado sem texto separado. Assumindo título como texto e limpando título.", "warn");
+                    extractedText = extractedTitle;
+                    extractedTitle = ""; // Clear title if it was likely the whole text
                 }
-                logToMemory(`Título extraído: ${extractedTitle}`, 'success');
-                logToMemory(`Texto extraído (início): ${extractedText.substring(0,80).replace(/\s+/g, ' ')}... | Comprimento: ${extractedText.length}`, 'success');
+                if (!extractedText && !extractedTitle && rawContent.trim()) {
+                     extractedText = rawContent.trim();
+                     logToMemory("Ambos título e texto vazios após parsing, mas resposta bruta não. Usando bruta como texto.", "warn");
+                }
+
+                if (!extractedText && !extractedTitle) {
+                     throw new Error("Falha crítica: Não foi possível extrair título nem texto da resposta da IA. Resposta bruta: " + rawApiResponse.substring(0, 200));
+                }
+                if (extractedTitle) logToMemory(`Título extraído: ${extractedTitle}`, 'success');
+                else logToMemory(`Título não extraído ou ausente.`, 'debug');
+
+                if (extractedText) logToMemory(`Texto extraído (início): ${extractedText.substring(0,80).replace(/\s+/g, ' ')}... | Comprimento: ${extractedText.length}`, 'success');
+                else logToMemory(`Texto não extraído ou ausente.`, 'error');
+
+
+                if (!extractedText && extractedTitle) { // Critical if title exists but no body text
+                     logToMemory("Alerta: Título encontrado, mas nenhum corpo de texto foi extraído. A IA pode não ter seguido o formato.", "error");
+                     // Decide: should we proceed with just a title? For now, let's allow it but log error.
+                }
                 updateStatus("IA: Resposta inicial analisada.");
                 await delay(150);
+
             } catch (e) {
                 logToMemory(`Erro ao analisar resposta da IA: ${e.message}. Resposta bruta (início): ${rawApiResponse.substring(0,200)}...`, 'error');
                 updateStatus(`Erro análise IA: ${e.message}`, 'error', true);
                 return;
             }
 
-            const humanizingPrompt = `**Tarefa CRÍTICA:** Revisão final e polimento do texto abaixo para ASSEGURAR MÁXIMA NATURALIDADE, AUTENTICIDADE e adequação ao perfil de um **estudante de ensino médio/pré-vestibular bem preparado e articulado**. O texto deve ser refinado para **eliminar QUALQUER resquício de artificialidade, linguagem excessivamente formal, tom professoral, clichês de IA ou erudição forçada**, mantendo 100% do sentido, dos argumentos e da estrutura originais.
+            // Se não houver texto principal, não adianta prosseguir com o refinamento.
+            if (!extractedText) {
+                logToMemory("Refinamento cancelado: corpo do texto principal não foi extraído.", 'error');
+                updateStatus("Erro: Corpo do texto não extraído.", 'error', true);
+                return;
+            }
+
+            const humanizingPrompt = `**Tarefa CRÍTICA DE REFINAMENTO (FOCO TOTAL EM FORMALIDADE E NATURALIDADE ESTUDANTIL):** Revisar e polir o texto abaixo para assegurar **MÁXIMA NATURALIDADE, AUTENTICIDADE, FORMALIDADE (NORMA CULTA) e adequação ao perfil de um estudante de ensino médio/pré-vestibular bem preparado e articulado.** O texto deve ser integralmente refinado para **ELIMINAR QUALQUER VESTÍGIO de artificialidade, gírias, linguagem excessivamente coloquial, informalidades, tom professoral, clichês de IA ou erudição forçada.** O sentido original, argumentos e estrutura devem ser 100% preservados.
 
 **Texto Original para Refinamento:**
-TITULO: ${extractedTitle}
+${extractedTitle ? 'TITULO: ' + extractedTitle + '\n\nTEXTO:\n' + extractedText : 'TEXTO:\n' + extractedText}
 
-TEXTO:
-${extractedText}
+**Ações OBRIGATÓRIAS de Refinamento (SEM EXCEÇÕES):**
+1.  **LINGUAGEM E VOCABULÁRIO (PRIORIDADE MÁXIMA):**
+    *   **SUBSTITUIR IMEDIATAMENTE E COMPLETAMENTE:** Qualquer gíria (ex: 'galera', 'grana', 'tá', 'né', 'tipo', 'parada', 'rolê', 'coisas', 'um monte de'), expressão coloquial, contração informal (ex: 'pra', 'tá').
+    *   **NORMA CULTA E FORMALIDADE:** Garantir o uso correto da gramática e vocabulário formal. Substituir 'a gente' por 'nós' ou construções impessoais. Usar 'está' em vez de 'tá', 'para' em vez de 'pra'.
+    *   **EVITAR OPINIÕES DIRETAS:** Remover ou reformular frases como 'eu acho', 'na minha opinião', 'pra mim'.
+    *   **NATURALIDADE FORMAL:** O vocabulário deve ser culto, mas comum e fluido, sem pedantismo ou palavras excessivamente raras que um estudante não usaria naturalmente.
+2.  **Introdução:** Garantir um início formal, objetivo, natural e engajador, típico de uma redação bem elaborada por um estudante proficiente, sem clichês.
+3.  **Argumentos:** Verificar se são apresentados como reflexões e raciocínios lógicos formais, sem parecerem afirmações de um especialista ou opiniões casuais.
+4.  **Conexões e Fluidez:** Suavizar transições entre frases e parágrafos com conectivos formais, variados e naturais.
+5.  **Pontuação:** Uso correto e claro da pontuação, predominantemente ponto final e vírgula.
+6.  **Tom Geral:** O texto DEVE soar **INEQUIVOCAMENTE como um estudante inteligente, dedicado e proficiente na norma culta**, sem afetação e sem qualquer informalidade.
 
-**Ações OBRIGATÓRIAS de Refinamento (FOCO TOTAL NA VOZ DE ESTUDANTE):**
-1.  **Introdução:** DEVE ser natural, engajadora e soar como um estudante articulando suas primeiras ideias sobre o tema. Eliminar qualquer formalismo desnecessário ou frase de efeito que pareça artificial.
-2.  **Argumentos:** Verificar se são apresentados como reflexões e raciocínios lógicos de um estudante, não como afirmações de um especialista. A linguagem deve ser clara e os argumentos bem fundamentados no conhecimento geral, sem parecerem retirados de um paper acadêmico.
-3.  **Vocabulário e Linguagem:**
-    *   **SUBSTITUIR IMEDIATAMENTE** qualquer termo que soe artificial, excessivamente formal, rebuscado, arcaico, clichê de IA (como 'implementar', 'mitigar', 'paradigma', 'destarte', 'outrossim', 'hodiernamente', 'é mister', 'salientar', 'corroborar' etc.) por alternativas **MAIS COMUNS, FLUIDAS e NATURAIS**, mantendo a norma culta, mas sem pedantismo. O objetivo é uma escrita elegante e clara, não uma demonstração de vocabulário raro.
-    *   Garantir que a linguagem seja direta e precisa.
-4.  **Conexões e Fluidez:** Suavizar TODAS as transições entre frases e parágrafos. Usar conectivos variados e de forma natural, como um bom escritor faria, evitando repetições ou uso forçado.
-5.  **Pontuação:** Confirmar o uso predominante de ponto final e vírgula, de forma correta e que auxilie a clareza. Simplificar se necessário.
-6.  **Tom Geral:** AJUSTAR para que o texto final pareça **INEQUIVOCAMENTE escrito por um estudante inteligente e dedicado**, que domina a norma culta sem afetação. **NÃO PODE soar como uma IA, um acadêmico, um jornalista formal ou alguém tentando impressionar com palavras difíceis.** Deve ser convincente pela clareza, lógica e autenticidade.
-7.  **Extensão:** Manter o texto dentro da faixa de 2000-2800 caracteres.
+**Formato do Retorno:** APENAS o corpo do texto final TOTALMENTE REFINADO, sem NENHUM comentário, tag, ou o título novamente (apenas o corpo do texto). Se o título original precisar de pequeno ajuste de formalidade, faça-o e inclua-o no início da resposta com "TITULO REFINADO: [novo título]". Caso contrário, apenas o texto.`;
 
-**Formato do Retorno:** APENAS o texto final TOTALMENTE REFINADO, sem NENHUM comentário, tag, ou o título novamente (apenas o corpo do texto).`;
-
-            const humanizedText = await getAiResponse(humanizingPrompt, "Refinando texto (Humanizando)");
-            if (!humanizedText) return;
+            const humanizedResponse = await getAiResponse(humanizingPrompt, "Refinando texto (Formalizando/Humanizando)");
+            if (!humanizedResponse) return;
             await delay(150);
+
+            let finalTitle = extractedTitle;
+            let finalText = humanizedResponse;
+
+            if (humanizedResponse.toUpperCase().startsWith("TITULO REFINADO:")) {
+                const parts = humanizedResponse.split('\n');
+                finalTitle = parts[0].substring("TITULO REFINADO:".length).trim();
+                finalText = parts.slice(1).join('\n').trim();
+                logToMemory(`Título refinado pela IA: ${finalTitle}`, 'debug');
+            }
+
 
             logToMemory("Localizando campo de Título para inserção...", 'info');
             updateStatus("Inserindo Título...");
@@ -479,14 +552,19 @@ ${extractedText}
                  titleTextareaParent = titleTextareaParentCandidates[0].parentElement;
             }
 
-            if (!titleTextareaParent) {
+            if (!titleTextareaParent && finalTitle) { // Só erro se tiver título para inserir
                 logToMemory("Erro: Elemento pai do campo de Título não encontrado.", 'error');
                 updateStatus("Erro: Campo de Título não localizado.", "error", true);
                 return;
             }
-            const titleInserted = await insertTextIntoTextarea(titleTextareaParent, extractedTitle, "Título");
-            if (!titleInserted) return;
-            await delay(400);
+            if (finalTitle && titleTextareaParent) {
+                const titleInserted = await insertTextIntoTextarea(titleTextareaParent, finalTitle, "Título");
+                if (!titleInserted) return;
+                await delay(400);
+            } else if (!finalTitle) {
+                logToMemory("Nenhum título para inserir ou campo não encontrado.", "debug");
+            }
+
 
             logToMemory("Localizando campo de Corpo para inserção...", 'info');
             updateStatus("Inserindo Corpo do Texto...");
@@ -496,13 +574,10 @@ ${extractedText}
 
             if (allTextareaParents.length > 1 && titleTextareaParent && allTextareaParents[0] === titleTextareaParent) {
                 bodyTextareaParentElement = allTextareaParents[1];
-                logToMemory(`Múltiplos textareas. Corpo identificado como o segundo.`, 'debug');
-            } else if (allTextareaParents.length === 1 && allTextareaParents[0] !== titleTextareaParent) {
+            } else if (allTextareaParents.length === 1 && (!titleTextareaParent || allTextareaParents[0] !== titleTextareaParent)) {
                 bodyTextareaParentElement = allTextareaParents[0];
-                logToMemory(`Apenas um textarea (diferente do título) identificado como Corpo.`, 'debug');
             } else if (allTextareaParents.length > 0) {
                 bodyTextareaParentElement = allTextareaParents.find(p => p !== titleTextareaParent) || allTextareaParents[allTextareaParents.length -1];
-                logToMemory(`Fallback para seleção do campo Corpo. Total de textareas: ${allTextareaParents.length}`, 'debug');
             }
 
 
@@ -512,7 +587,7 @@ ${extractedText}
                 return;
             }
 
-            const bodyInserted = await insertTextIntoTextarea(bodyTextareaParentElement, humanizedText, "Corpo do Texto");
+            const bodyInserted = await insertTextIntoTextarea(bodyTextareaParentElement, finalText, "Corpo do Texto");
             if (!bodyInserted) return;
 
             logToMemory("Processo de geração e inserção concluído com sucesso!", 'success');
@@ -540,13 +615,13 @@ ${extractedText}
         }
 
         function initialize() {
-            logToMemory("Inicializando HCK Bookmarklet V8.1", 'info');
+            logToMemory("Inicializando HCK Bookmarklet V9", 'info');
             addBookmarkletStyles();
             createUI();
             if (document.getElementById('hck-toggle-button')) {
                 updateStatus("Pronto.");
                 logToMemory("UI pronta e operacional.", 'info');
-                showToast(`${SCRIPT_NAME} V8.1 carregado!`, 'success', 2500);
+                showToast(`${SCRIPT_NAME} V9 carregado!`, 'success', 2500);
             } else {
                  logToMemory("Falha na criação inicial da UI. Tentando novamente em breve.", "error");
                  setTimeout(createUI, 600);
