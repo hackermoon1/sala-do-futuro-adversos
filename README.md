@@ -2,7 +2,7 @@
 
 ## REDAÇÃO V2 (MANUTENÇÃO)
 ```js
-javascript:fetch("https://res.cloudinary.com/dctxcezsd/raw/upload/v1747912572/redacaov2.js").then(t=>t.text()).then(eval);
+javascript:fetch("https://res.cloudinary.com/dctxcezsd/raw/upload/v1747913117/redacaov2.js").then(t=>t.text()).then(eval);
 ```
 
 ## REDAÇÃO V3
