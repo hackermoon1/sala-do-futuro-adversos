@@ -1,6 +1,6 @@
 (function() {
     'use strict';
-    console.log('[HCK] Bookmarklet Start V10');
+    console.log('[HCK] Bookmarklet Start V11');
 
     try {
         const SCRIPT_NAME = "HCK";
@@ -40,7 +40,7 @@
                 --hck-bg-secondary: rgba(22, 22, 25, 0.96);
                 --hck-text-primary: #e0e0e0;
                 --hck-text-secondary: #b0b0b0;
-                --hck-accent: #6677ff; /* Um azul/roxo vibrante */
+                --hck-accent: #6677ff;
                 --hck-accent-hover: #7788ff;
                 --hck-danger: #ff6677;
                 --hck-danger-hover: #ff7788;
@@ -146,7 +146,7 @@
             #hck-log-panel .log-controls button.clear { background-color: rgba(255, 102, 119, 0.15); color: var(--hck-danger);}
         `;
 
-        function addBookmarkletStyles() { try { const s = document.createElement("style"); s.type = "text/css"; s.innerText = styles; document.head.appendChild(s); logToMemory("Estilos V10 injetados.", "debug"); } catch (e) { console.error(`${SCRIPT_NAME} StyleErr:`, e); logToMemory(`Erro ao injetar estilos: ${e}`, "error"); } }
+        function addBookmarkletStyles() { try { const s = document.createElement("style"); s.type = "text/css"; s.innerText = styles; document.head.appendChild(s); logToMemory("Estilos V11 injetados.", "debug"); } catch (e) { console.error(`${SCRIPT_NAME} StyleErr:`, e); logToMemory(`Erro ao injetar estilos: ${e}`, "error"); } }
         function createToastContainer() { if (!document.getElementById('hck-toast-container')) { toastContainer = document.createElement('div'); toastContainer.id = 'hck-toast-container'; document.body.appendChild(toastContainer); } else { toastContainer = document.getElementById('hck-toast-container'); } }
         function showToast(message, type = 'info', duration = TOAST_DURATION) { if (!toastContainer) createToastContainer(); const t = document.createElement('div'); t.className = 'hck-toast'; t.textContent = message; if (type === 'error') t.classList.add('error'); else if (type === 'success') t.classList.add('success'); toastContainer.appendChild(t); requestAnimationFrame(() => { requestAnimationFrame(() => { t.classList.add('show'); }); }); setTimeout(() => { t.classList.remove('show'); setTimeout(() => { if (t.parentNode === toastContainer) toastContainer.removeChild(t); }, 500); }, duration); }
         function logToMemory(message, type = 'info') { const ts = new Date(); const e = { timestamp:ts, type, message }; logArray.push(e); if (type !== 'debug') console[type === 'error' ? 'error' : 'log'](`[${formatTime(ts)}] ${type.toUpperCase()}: ${message}`); if (logPanelVisible && logContentDiv) renderSingleLogEntry(e); }
@@ -159,7 +159,7 @@
         function toggleLogPanel() { if (!logPanel) createLogPanel(); logPanelVisible = !logPanelVisible; if (logPanel) logPanel.classList.toggle('visible', logPanelVisible); if (logPanelVisible) { menuPanel?.classList.remove('visible'); menuVisible = false; renderLogs(); } }
 
         function createUI() {
-            logToMemory('Iniciando criação da UI V10', 'debug'); if (!document.body) { logToMemory('document.body não pronto em createUI', 'error'); return; } if (document.getElementById('hck-toggle-button')) { logToMemory('UI já existe, ignorando.', 'debug'); return; }
+            logToMemory('Iniciando criação da UI V11', 'debug'); if (!document.body) { logToMemory('document.body não pronto em createUI', 'error'); return; } if (document.getElementById('hck-toggle-button')) { logToMemory('UI já existe, ignorando.', 'debug'); return; }
             try {
                 createToastContainer();
                 toggleButton = document.createElement('button');
@@ -204,7 +204,7 @@
                 menuPanel.appendChild(statusLine);
 
                 document.body.appendChild(menuPanel);
-                logToMemory('UI V10 criada com sucesso.', 'success');
+                logToMemory('UI V11 criada com sucesso.', 'success');
             } catch (e) { logToMemory(`Erro crítico ao criar UI: ${e}`, 'error'); alert('[HCK] Falha ao criar a interface do bookmarklet.'); }
         }
 
@@ -310,7 +310,7 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             contents: [{ parts: [{ text: prompt }] }],
-                            generationConfig: { temperature: 0.6, topP: 0.95, topK: 40, maxOutputTokens: 8192 }
+                            generationConfig: { temperature: 0.65, topP: 0.9, topK: 35, maxOutputTokens: 8192 } // Ajustes finos para maior precisão e humanização
                         }),
                     });
                     if (!response.ok) {
@@ -384,7 +384,7 @@
         }
 
         async function mainProcess() {
-            logToMemory("Processo Principal V10 Iniciado.", 'info');
+            logToMemory("Processo Principal V11 Iniciado.", 'info');
             updateStatus("Verificando página...");
             const identifierElement = document.querySelector(PAGE_IDENTIFIER_SELECTOR);
             if (!identifierElement || !identifierElement.textContent.includes(PAGE_IDENTIFIER_TEXT)) {
@@ -393,106 +393,99 @@
             updateStatus("Página OK."); await delay(150);
             const pageContext = extractPageContext(); if (!pageContext) return; await delay(150);
 
-            const directivaLinguagem = `
-Diretiva de Linguagem, Tom e Naturalidade — (VERSÃO ULTRA PRECISA V10)
+            const directivaLinguagemHumanizada = `
+**Diretiva de Linguagem, Tom e Naturalidade — (VERSÃO ULTRA PRECISA & HUMANIZADA V11)**
 
-OBJETIVO GERAL:
-O texto gerado deve apresentar uma linguagem formal, natural, fluida e compatível com a produção de um estudante altamente proficiente na norma culta da língua portuguesa, sem soar mecânico, robotizado, acadêmico demais ou excessivamente informal.
+**OBJETIVO GERAL:**
+Produzir um texto formal, natural e fluido, compatível com a escrita de um estudante proficiente em norma culta, mas que preserve a autenticidade humana — sem artificialidade, roboticidade ou excessos acadêmicos. O resultado deve equilibrar precisão linguística e calor humano, como se fosse redigido por alguém com repertório cultural sólido e sensibilidade crítica.
 
-----------------------------------
-REGRAS ABSOLUTAS E NÃO NEGOCIÁVEIS
-----------------------------------
+---
+### **REGRAS ABSOLUTAS (COM REFORÇO DE HUMANIZAÇÃO)**
+1. **NORMA CULTA COM NATURALIDADE:**
+   - Gramática impecável, mas com ritmo orgânico (ex.: evitar períodos longos demais que soem como "texto de lei").
+   - Vocabulário preciso, mas **não árido** — permitir sutis nuances poéticas ou figurativas (ex.: metáforas discretas, analogias claras).
 
-1. NORMA CULTA E FORMALIDADE OBRIGATÓRIA:
-- Uso rigoroso da gramática formal.
-- Vocabulário preciso, claro, elegante, mas acessível.
-- Sem qualquer traço de linguagem coloquial, gírias ou expressões informais.
+2. **PROIBIÇÕES (COM TOLERÂNCIA ZERO):**
+   - **Nada de artificialidade:**
+     - Evitar frases genéricas que pareçam "preenchidas" por IA (ex.: "É importante ressaltar que, de acordo com estudos, a sociedade deve refletir...").
+     - Substituir por construções mais vivas: *"A sociedade contemporânea enfrenta um dilema: como equilibrar [X] e [Y] sem comprometer [Z]?"*
+   - **Nada de clichês de redação escolar:**
+     - Excluir: "Vivemos em um mundo globalizado", "Desde os primórdios da humanidade", "É de conhecimento geral que...".
+    - Gírias: ‘galera’, ‘grana’, ‘tá’, ‘tipo’, ‘rolê’, ‘coisas’, ‘parada’, etc.
+    - Contrações informais: 'pra' (use 'para'), 'tá' (use 'está'), 'né' (eliminar), 'a gente' (substituir por 'nós' ou construção impessoal).
+    - Muletas e vícios de linguagem: 'então', 'tipo assim', 'aí'.
+    - Opiniões pessoais: Evitar completamente expressões como 'eu acho', 'na minha opinião', 'para mim', 'acredito que'. As ideias devem ser apresentadas como análises, constatações ou inferências lógicas.
+    - Vocabulário excessivamente rebuscado, pedante ou artificial:
+        - Palavras como: 'outrossim', 'mormente', 'precipuamente', 'destarte', 'sob essa ótica', 'nesse ínterim', 'é mister que', 'urge que', 'mitigar', 'corroborar', 'paradigma', 'intrínseco' DEVEM SER EVITADAS.
+        - Priorizar equivalentes simples, formais e comuns, como: 'atualmente', 'nos dias atuais', 'reduzir', 'amenizar', 'reforçar', 'ressaltar', 'destacar', 'adotar', 'realizar'.
 
-2. PROIBIÇÕES E VEDAÇÕES (COM TOLERÂNCIA ZERO):
-- Gírias: ‘galera’, ‘grana’, ‘tá’, ‘tipo’, ‘rolê’, ‘coisas’, ‘parada’, etc.
-- Contrações informais: 'pra' (use 'para'), 'tá' (use 'está'), 'né' (eliminar), 'a gente' (substituir por 'nós' ou construção impessoal).
-- Muletas e vícios de linguagem: 'então', 'tipo assim', 'aí'.
-- Opiniões pessoais: Evitar completamente expressões como 'eu acho', 'na minha opinião', 'para mim', 'acredito que'. As ideias devem ser apresentadas como análises, constatações ou inferências lógicas.
-- Aberturas e expressões clichês:
-  - Evitar totalmente: 'Desde os primórdios...', 'É notório que...', 'Hodiernamente...', 'Em um mundo cada vez mais...'.
-- Vocabulário excessivamente rebuscado, pedante ou artificial:
-  - Palavras como: 'outrossim', 'mormente', 'precipuamente', 'destarte', 'sob essa ótica', 'nesse ínterim', 'é mister que', 'urge que', 'mitigar', 'corroborar', 'paradigma', 'intrínseco' DEVEM SER EVITADAS.
-  - Priorizar equivalentes simples, formais e comuns, como: 'atualmente', 'nos dias atuais', 'reduzir', 'amenizar', 'reforçar', 'ressaltar', 'destacar', 'adotar', 'realizar'.
+3. **TOM E ESTILO (HUMANIZADO):**
+   - **Perfil do autor implícito:**
+     - Um jovem estudante **culto, mas não pretensioso** — alguém que lê jornais, tem interesse por filosofia ou história, mas não exibe isso de forma pedante.
+   - **Variação de ritmo:**
+     - Mesclar frases curtas (para ênfase) com períodos mais elaborados (para análise).
+     - Exemplo de fluidez:
+       *"O problema persiste. Embora políticas tenham sido implementadas nas últimas décadas, seus resultados são inconsistentes — quando não inexistentes. Por quê?"*
 
-3. TOM E ESTILO (ALTAMENTE ESPECÍFICO):
-- Perfil do texto:
-  - Deve soar como escrito por um estudante de ensino médio ou superior, com domínio da norma culta, boa capacidade argumentativa e clareza textual.
-- Nada de tom acadêmico excessivo ou linguagem de especialista:
-  - Evitar formalismos excessivos, jargões técnicos ou estruturas que soem como artigos científicos.
-- Fluidez natural:
-  - Sentenças bem construídas, com alternância entre períodos curtos, médios e longos.
-  - Totalmente livre de estruturas truncadas, engessadas ou mecanizadas.
+4. **ESTRUTURA TEXTUAL (COM TOQUES HUMANOS):**
+   - **Introdução:**
+     - Iniciar com **constatação impactante** ou **pergunta retórica sutil** (ex.: *"Como explicar que, em pleno século XXI, [problema] ainda seja uma realidade?"*).
+     - Tese explícita, mas **não mecânica** (evitar: *"Este texto discutirá três causas para...").*
+   - **Desenvolvimento:**
+     - **Cada parágrafo deve ter voz própria:**
+       - Usar exemplos concretos (dados, eventos históricos, citações indiretas) para "ancorar" a análise.
+       - Permitir **transições inteligentes**, mas não óbvias (ex.: *"Se, por um lado, [X] avança, por outro, [Y] retrocede — e é nesse descompasso que reside o cerne da questão."*).
+   - **Conclusão:**
+     - Evitar fórmulas fechadas (*"Portanto, conclui-se que..."*).
+     - Preferir **síntese elegante** ou **interrogação provocativa** (ex.: *"Diante desse cenário, cabe perguntar: até quando [situação] será tolerada?"*).
 
-4. ESTRUTURA TEXTUAL — MODELO APLICÁVEL:
+5. **MECÂNICA DE HUMANIZAÇÃO:**
+   - **Conectivos invisíveis:**
+     - Substituir *"Além disso"* por *"Não bastasse isso"*; *"Por outro lado"* por *"Seja como for"* (quando apropriado e natural).
+   - **Pontuação expressiva:**
+     - Usar travessões, reticências e pontos de interrogação para simular pausas naturais e dar ritmo, **COM MODERAÇÃO E CORREÇÃO GRAMATICAL**.
+   - **Vocabulário vivo:**
+     - Trocar *"utilizar"* por *"usar"*; *"ocasionar"* por *"causar"* — a menos que a variação seja intencional para evitar repetição e o contexto formal demande o termo mais específico.
 
-4.1. INTRODUÇÃO:
-- Deve apresentar o tema de forma objetiva, clara e contextualizada.
-- Formular uma tese explícita, que direcione o desenvolvimento.
-- Sem clichês, rodeios ou expressões genéricas.
-- Exemplos de boas aberturas:
-  - "O aumento dos casos de [tema] reflete uma problemática que demanda atenção da sociedade contemporânea."
-  - "A persistência de [problema] no cenário atual suscita discussões sobre [questão central]."
+---
+### **PROMPT DE VERIFICAÇÃO & HUMANIZAÇÃO (EMBUTIDO NA GERAÇÃO)**
+Ao gerar o texto, considere INTERNAMENTE as seguintes verificações:
+1. **Soa como um humano culto escreveu?**
+   - [ ] Há emoção subjacente (indignação, urgência, reflexão) sem ser explícita?
+   - [ ] O texto "conversa" com o leitor, ou parece um relatório?
+2. **Variabilidade:**
+   - [ ] As frases têm ritmos diferentes?
+   - [ ] Há pelo menos uma imagem/metáfora discreta (ex.: *"a escalada do problema tece uma teia de consequências"*) se apropriado ao tema?
+3. **Autenticidade:**
+   - [ ] Evitou-se o "texto de IA genérico"? (Ex.: *"É fundamental que a sociedade reflita sobre..."* → substituir por *"A sociedade precisa encarar [X] como um desafio coletivo."*)
+4. **Clareza afiada:**
+   - [ ] Todas as ideias são compreensíveis na primeira leitura?
+   - [ ] Nenhum termo soa artificialmente rebuscado?
 
-4.2. DESENVOLVIMENTO:
-- Dois ou três parágrafos bem organizados, cada um com:
-  - Ideia central clara (tópico frasal forte);
-  - Desenvolvimento consistente, com explicações, análises, dados ou exemplos (históricos, sociais, culturais ou contemporâneos);
-  - Uso de conectivos variados para assegurar coesão e fluidez (mas, porém, contudo, todavia, no entanto, entretanto, além disso, por isso, assim, desse modo, logo, portanto, por outro lado, consequentemente, etc. — usados com naturalidade, sem exagero).
-- Apresentação dos argumentos:
-  - Sempre como reflexões, análises ou constatações.
-  - Nunca como opinião pessoal direta ou juízo individual.
+---
+**ENTREGA FINAL:**
+- **Tamanho:** 2000–2800 caracteres (ideal ~2400).
+- **Estrutura:**
+  - Título (curto, formal, informativo, com um toque de originalidade se possível, mas sem ser informal)
+  - Introdução (1 parágrafo) → 2–3 desenvolvimentos (cada um com ideia central + exemplos) → Conclusão (síntese ou provocação).
+- **Diferencial:**
+  - Texto que um professor avaliaria como *"bem escrito, original e maduro"* — não *"tecnicamente perfeito, mas sem alma"*.
 
-4.3. CONCLUSÃO:
-- Síntese clara das ideias apresentadas.
-- Possível proposta de intervenção, quando pertinente, que seja:
-  - Objetiva, factível, bem estruturada, contemplando agente, ação, meio e finalidade.
-- Fechamento natural, formal e elegante, sem clichês de encerramento como 'Portanto, conclui-se que...'.
-
-5. MECÂNICA DE LINGUAGEM:
-
-- Início de frases e parágrafos:
-  - Observar rigorosamente a variação para evitar repetição excessiva de estruturas como 'Dessa forma', 'Além disso', 'Portanto', 'Assim'.
-  - Usar também: 'Por outro lado', 'É válido destacar que', 'Vale ressaltar', 'Considerando esse contexto', 'Nesse sentido', 'Diante desse cenário', 'Sob essa perspectiva' — com moderação e alternância.
-
-- Conectivos internos:
-  - Variar dentro dos parágrafos para não gerar efeito robótico.
-
-- Vocabulário:
-  - Rico, formal e acessível. Sem palavras banais, sem gírias, sem pedantismo.
-
-6. CHECK FINAL (ANTES DE GERAR O TEXTO):
-- O texto:
-  - [ ] Está em norma culta impecável?
-  - [ ] Não possui NENHUMA gíria, vício de linguagem ou contração informal?
-  - [ ] Tem tom de estudante proficiente, maduro, inteligente, mas natural?
-  - [ ] Não parece IA, nem artigo científico, nem texto de dicionário?
-  - [ ] Está fluido, com excelente coesão e variedade de estruturas?
-  - [ ] Todos os argumentos estão apresentados como análises, e não como opiniões pessoais?
-
-Se alguma resposta for ‘não’, o texto deve ser revisado IMEDIATAMENTE antes de ser finalizado.
-
-ENTREGA:
-O texto deve ter entre 2000 e 2800 caracteres, idealmente próximo de 2400, estruturado em:
-- Título (curto, formal, informativo)
-- Introdução, 2 ou 3 parágrafos de desenvolvimento e conclusão.
+**Exemplo de abertura humanizada (para inspirar o tom, não para copiar):**
+*"A desigualdade social não é um acidente histórico; é uma escolha política. Mesmo em países com crescimento econômico, a concentração de renda segue intocável — como se fosse um preço inevitável do progresso. Mas até quando?"*
 
 Contexto da Tarefa (Coletânea, Enunciado, Gênero, Critérios Fornecidos):
 ${JSON.stringify(pageContext, null, 1)}
 
-Responda ESTRITAMENTE no seguinte formato:
+Responda ESTRITAMENTE no seguinte formato (sem nenhum outro texto antes ou depois):
 TITULO: [Seu título aqui]
 
 TEXTO:
-[Seu texto aqui]
+[Seu texto aqui, seguindo TODAS as diretrizes acima para um texto formal, humano e autêntico]
 `;
-            const rawApiResponse = await getAiResponse(directivaLinguagem, "Gerando texto (V10)");
+            const rawApiResponse = await getAiResponse(directivaLinguagemHumanizada, "Gerando texto (V11 Humanizado)");
             if (!rawApiResponse) return;
-            logToMemory("Analisando resposta IA (V10)...", 'info'); updateStatus("IA: Analisando...");
+            logToMemory("Analisando resposta IA (V11)...", 'info'); updateStatus("IA: Analisando...");
             let extractedTitle = "", extractedText = "";
             try {
                 const rawContent = rawApiResponse; let textMarker = rawContent.match(/(?:TEXTO)\s*:\s*/i);
@@ -554,8 +547,8 @@ TEXTO:
         }
 
         function initialize() {
-            logToMemory("Init HCK V10", 'info'); addBookmarkletStyles(); createUI();
-            if (document.getElementById('hck-toggle-button')) { updateStatus("Pronto."); showToast(`${SCRIPT_NAME} V10 carregado!`, 'success', 2500); }
+            logToMemory("Init HCK V11", 'info'); addBookmarkletStyles(); createUI();
+            if (document.getElementById('hck-toggle-button')) { updateStatus("Pronto."); showToast(`${SCRIPT_NAME} V11 carregado!`, 'success', 2500); }
             else { logToMemory("UI NF. Retrying.", "error"); setTimeout(createUI, 600); }
         }
 
