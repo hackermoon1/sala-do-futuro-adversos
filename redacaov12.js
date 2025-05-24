@@ -1,6 +1,6 @@
 (function() {
     'use strict';
-    console.log('[HCK] Bookmarklet Start V11');
+    console.log('[HCK] Bookmarklet Start V12');
 
     try {
         const SCRIPT_NAME = "HCK";
@@ -146,7 +146,7 @@
             #hck-log-panel .log-controls button.clear { background-color: rgba(255, 102, 119, 0.15); color: var(--hck-danger);}
         `;
 
-        function addBookmarkletStyles() { try { const s = document.createElement("style"); s.type = "text/css"; s.innerText = styles; document.head.appendChild(s); logToMemory("Estilos V11 injetados.", "debug"); } catch (e) { console.error(`${SCRIPT_NAME} StyleErr:`, e); logToMemory(`Erro ao injetar estilos: ${e}`, "error"); } }
+        function addBookmarkletStyles() { try { const s = document.createElement("style"); s.type = "text/css"; s.innerText = styles; document.head.appendChild(s); logToMemory("Estilos V12 injetados.", "debug"); } catch (e) { console.error(`${SCRIPT_NAME} StyleErr:`, e); logToMemory(`Erro ao injetar estilos: ${e}`, "error"); } }
         function createToastContainer() { if (!document.getElementById('hck-toast-container')) { toastContainer = document.createElement('div'); toastContainer.id = 'hck-toast-container'; document.body.appendChild(toastContainer); } else { toastContainer = document.getElementById('hck-toast-container'); } }
         function showToast(message, type = 'info', duration = TOAST_DURATION) { if (!toastContainer) createToastContainer(); const t = document.createElement('div'); t.className = 'hck-toast'; t.textContent = message; if (type === 'error') t.classList.add('error'); else if (type === 'success') t.classList.add('success'); toastContainer.appendChild(t); requestAnimationFrame(() => { requestAnimationFrame(() => { t.classList.add('show'); }); }); setTimeout(() => { t.classList.remove('show'); setTimeout(() => { if (t.parentNode === toastContainer) toastContainer.removeChild(t); }, 500); }, duration); }
         function logToMemory(message, type = 'info') { const ts = new Date(); const e = { timestamp:ts, type, message }; logArray.push(e); if (type !== 'debug') console[type === 'error' ? 'error' : 'log'](`[${formatTime(ts)}] ${type.toUpperCase()}: ${message}`); if (logPanelVisible && logContentDiv) renderSingleLogEntry(e); }
@@ -159,7 +159,7 @@
         function toggleLogPanel() { if (!logPanel) createLogPanel(); logPanelVisible = !logPanelVisible; if (logPanel) logPanel.classList.toggle('visible', logPanelVisible); if (logPanelVisible) { menuPanel?.classList.remove('visible'); menuVisible = false; renderLogs(); } }
 
         function createUI() {
-            logToMemory('Iniciando criação da UI V11', 'debug'); if (!document.body) { logToMemory('document.body não pronto em createUI', 'error'); return; } if (document.getElementById('hck-toggle-button')) { logToMemory('UI já existe, ignorando.', 'debug'); return; }
+            logToMemory('Iniciando criação da UI V12', 'debug'); if (!document.body) { logToMemory('document.body não pronto em createUI', 'error'); return; } if (document.getElementById('hck-toggle-button')) { logToMemory('UI já existe, ignorando.', 'debug'); return; }
             try {
                 createToastContainer();
                 toggleButton = document.createElement('button');
@@ -204,7 +204,7 @@
                 menuPanel.appendChild(statusLine);
 
                 document.body.appendChild(menuPanel);
-                logToMemory('UI V11 criada com sucesso.', 'success');
+                logToMemory('UI V12 criada com sucesso.', 'success');
             } catch (e) { logToMemory(`Erro crítico ao criar UI: ${e}`, 'error'); alert('[HCK] Falha ao criar a interface do bookmarklet.'); }
         }
 
@@ -310,7 +310,7 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             contents: [{ parts: [{ text: prompt }] }],
-                            generationConfig: { temperature: 0.65, topP: 0.9, topK: 35, maxOutputTokens: 8192 } // Ajustes finos para maior precisão e humanização
+                            generationConfig: { temperature: 0.7, topP: 0.95, topK: 40, maxOutputTokens: 8192 } // Temp um pouco mais alta para este prompt mais direto
                         }),
                     });
                     if (!response.ok) {
@@ -384,7 +384,7 @@
         }
 
         async function mainProcess() {
-            logToMemory("Processo Principal V11 Iniciado.", 'info');
+            logToMemory("Processo Principal V12 Iniciado.", 'info');
             updateStatus("Verificando página...");
             const identifierElement = document.querySelector(PAGE_IDENTIFIER_SELECTOR);
             if (!identifierElement || !identifierElement.textContent.includes(PAGE_IDENTIFIER_TEXT)) {
@@ -393,99 +393,60 @@
             updateStatus("Página OK."); await delay(150);
             const pageContext = extractPageContext(); if (!pageContext) return; await delay(150);
 
-            const directivaLinguagemHumanizada = `
-**Diretiva de Linguagem, Tom e Naturalidade — (VERSÃO ULTRA PRECISA & HUMANIZADA V11)**
+            const promptDiretoV12 = `
+Você redigirá um texto em português do Brasil seguindo estritamente as instruções abaixo.
+O texto deve ter um título e quatro parágrafos no total: uma introdução, dois de desenvolvimento e uma conclusão.
 
-**OBJETIVO GERAL:**
-Produzir um texto formal, natural e fluido, compatível com a escrita de um estudante proficiente em norma culta, mas que preserve a autenticidade humana — sem artificialidade, roboticidade ou excessos acadêmicos. O resultado deve equilibrar precisão linguística e calor humano, como se fosse redigido por alguém com repertório cultural sólido e sensibilidade crítica.
+Instruções Detalhadas:
+1.  **Linguagem e Tom:**
+    *   Utilize linguagem formal, impessoal e em terceira pessoa.
+    *   Mantenha coerência, coesão e boa estrutura nos parágrafos e frases.
+    *   Demonstre conhecimento sobre o tema proposto.
+    *   Não desrespeite os direitos humanos.
+    *   Evite citar estas instruções ou qualquer parte deste prompt no texto final.
 
+2.  **Título:**
+    *   Crie um título conciso e informativo, que reflita o tema central da redação.
+
+3.  **Primeiro Parágrafo (Introdução):**
+    *   Apresente o tema ao leitor de forma clara.
+    *   Introduza o seu ponto de vista (tese) sobre o tema.
+
+4.  **Segundo Parágrafo (Desenvolvimento 1):**
+    *   Apresente argumentos que sustentem seu ponto de vista.
+    *   Utilize fontes como pesquisas, notícias, filmes, livros, pensadores, etc., para embasar e comprovar sua visão.
+    *   Lembre-se de citar a origem das informações utilizadas (ex: "Segundo o filósofo X...", "De acordo com dados do IBGE...", "Como retratado no filme Y...").
+
+5.  **Terceiro Parágrafo (Desenvolvimento 2):**
+    *   Adicione mais argumentos que reforcem sua tese, seguindo a mesma linha de fundamentação do parágrafo anterior.
+
+6.  **Quarto Parágrafo (Conclusão - Proposta de Intervenção):**
+    *   Este deve ser um parágrafo curto.
+    *   Elabore uma proposta de intervenção relacionada aos argumentos apresentados.
+    *   A proposta deve ser factível e detalhar:
+        *   **Agente:** Quem realizará a ação?
+        *   **Ação:** O que será feito?
+        *   **Meio/Modo:** Como será feito?
+        *   **Finalidade:** Qual o impacto esperado da solução para o problema?
+    *   Seja breve e objetivo na descrição da proposta.
+
+Contexto da Tarefa (Coletânea, Enunciado, Gênero Textual, Critérios de Avaliação Fornecidos pela Plataforma):
 ---
-### **REGRAS ABSOLUTAS (COM REFORÇO DE HUMANIZAÇÃO)**
-1. **NORMA CULTA COM NATURALIDADE:**
-   - Gramática impecável, mas com ritmo orgânico (ex.: evitar períodos longos demais que soem como "texto de lei").
-   - Vocabulário preciso, mas **não árido** — permitir sutis nuances poéticas ou figurativas (ex.: metáforas discretas, analogias claras).
-
-2. **PROIBIÇÕES (COM TOLERÂNCIA ZERO):**
-   - **Nada de artificialidade:**
-     - Evitar frases genéricas que pareçam "preenchidas" por IA (ex.: "É importante ressaltar que, de acordo com estudos, a sociedade deve refletir...").
-     - Substituir por construções mais vivas: *"A sociedade contemporânea enfrenta um dilema: como equilibrar [X] e [Y] sem comprometer [Z]?"*
-   - **Nada de clichês de redação escolar:**
-     - Excluir: "Vivemos em um mundo globalizado", "Desde os primórdios da humanidade", "É de conhecimento geral que...".
-    - Gírias: ‘galera’, ‘grana’, ‘tá’, ‘tipo’, ‘rolê’, ‘coisas’, ‘parada’, etc.
-    - Contrações informais: 'pra' (use 'para'), 'tá' (use 'está'), 'né' (eliminar), 'a gente' (substituir por 'nós' ou construção impessoal).
-    - Muletas e vícios de linguagem: 'então', 'tipo assim', 'aí'.
-    - Opiniões pessoais: Evitar completamente expressões como 'eu acho', 'na minha opinião', 'para mim', 'acredito que'. As ideias devem ser apresentadas como análises, constatações ou inferências lógicas.
-    - Vocabulário excessivamente rebuscado, pedante ou artificial:
-        - Palavras como: 'outrossim', 'mormente', 'precipuamente', 'destarte', 'sob essa ótica', 'nesse ínterim', 'é mister que', 'urge que', 'mitigar', 'corroborar', 'paradigma', 'intrínseco' DEVEM SER EVITADAS.
-        - Priorizar equivalentes simples, formais e comuns, como: 'atualmente', 'nos dias atuais', 'reduzir', 'amenizar', 'reforçar', 'ressaltar', 'destacar', 'adotar', 'realizar'.
-
-3. **TOM E ESTILO (HUMANIZADO):**
-   - **Perfil do autor implícito:**
-     - Um jovem estudante **culto, mas não pretensioso** — alguém que lê jornais, tem interesse por filosofia ou história, mas não exibe isso de forma pedante.
-   - **Variação de ritmo:**
-     - Mesclar frases curtas (para ênfase) com períodos mais elaborados (para análise).
-     - Exemplo de fluidez:
-       *"O problema persiste. Embora políticas tenham sido implementadas nas últimas décadas, seus resultados são inconsistentes — quando não inexistentes. Por quê?"*
-
-4. **ESTRUTURA TEXTUAL (COM TOQUES HUMANOS):**
-   - **Introdução:**
-     - Iniciar com **constatação impactante** ou **pergunta retórica sutil** (ex.: *"Como explicar que, em pleno século XXI, [problema] ainda seja uma realidade?"*).
-     - Tese explícita, mas **não mecânica** (evitar: *"Este texto discutirá três causas para...").*
-   - **Desenvolvimento:**
-     - **Cada parágrafo deve ter voz própria:**
-       - Usar exemplos concretos (dados, eventos históricos, citações indiretas) para "ancorar" a análise.
-       - Permitir **transições inteligentes**, mas não óbvias (ex.: *"Se, por um lado, [X] avança, por outro, [Y] retrocede — e é nesse descompasso que reside o cerne da questão."*).
-   - **Conclusão:**
-     - Evitar fórmulas fechadas (*"Portanto, conclui-se que..."*).
-     - Preferir **síntese elegante** ou **interrogação provocativa** (ex.: *"Diante desse cenário, cabe perguntar: até quando [situação] será tolerada?"*).
-
-5. **MECÂNICA DE HUMANIZAÇÃO:**
-   - **Conectivos invisíveis:**
-     - Substituir *"Além disso"* por *"Não bastasse isso"*; *"Por outro lado"* por *"Seja como for"* (quando apropriado e natural).
-   - **Pontuação expressiva:**
-     - Usar travessões, reticências e pontos de interrogação para simular pausas naturais e dar ritmo, **COM MODERAÇÃO E CORREÇÃO GRAMATICAL**.
-   - **Vocabulário vivo:**
-     - Trocar *"utilizar"* por *"usar"*; *"ocasionar"* por *"causar"* — a menos que a variação seja intencional para evitar repetição e o contexto formal demande o termo mais específico.
-
+Coletânea: ${pageContext.coletanea || "Não fornecida."}
+Enunciado Principal: ${pageContext.enunciado}
+Gênero Textual Solicitado: ${pageContext.generoTextual || "Dissertativo-argumentativo"}
+Critérios de Avaliação (se disponíveis): ${pageContext.criteriosAvaliacao || "Não fornecidos."}
 ---
-### **PROMPT DE VERIFICAÇÃO & HUMANIZAÇÃO (EMBUTIDO NA GERAÇÃO)**
-Ao gerar o texto, considere INTERNAMENTE as seguintes verificações:
-1. **Soa como um humano culto escreveu?**
-   - [ ] Há emoção subjacente (indignação, urgência, reflexão) sem ser explícita?
-   - [ ] O texto "conversa" com o leitor, ou parece um relatório?
-2. **Variabilidade:**
-   - [ ] As frases têm ritmos diferentes?
-   - [ ] Há pelo menos uma imagem/metáfora discreta (ex.: *"a escalada do problema tece uma teia de consequências"*) se apropriado ao tema?
-3. **Autenticidade:**
-   - [ ] Evitou-se o "texto de IA genérico"? (Ex.: *"É fundamental que a sociedade reflita sobre..."* → substituir por *"A sociedade precisa encarar [X] como um desafio coletivo."*)
-4. **Clareza afiada:**
-   - [ ] Todas as ideias são compreensíveis na primeira leitura?
-   - [ ] Nenhum termo soa artificialmente rebuscado?
-
----
-**ENTREGA FINAL:**
-- **Tamanho:** 2000–2800 caracteres (ideal ~2400).
-- **Estrutura:**
-  - Título (curto, formal, informativo, com um toque de originalidade se possível, mas sem ser informal)
-  - Introdução (1 parágrafo) → 2–3 desenvolvimentos (cada um com ideia central + exemplos) → Conclusão (síntese ou provocação).
-- **Diferencial:**
-  - Texto que um professor avaliaria como *"bem escrito, original e maduro"* — não *"tecnicamente perfeito, mas sem alma"*.
-
-**Exemplo de abertura humanizada (para inspirar o tom, não para copiar):**
-*"A desigualdade social não é um acidente histórico; é uma escolha política. Mesmo em países com crescimento econômico, a concentração de renda segue intocável — como se fosse um preço inevitável do progresso. Mas até quando?"*
-
-Contexto da Tarefa (Coletânea, Enunciado, Gênero, Critérios Fornecidos):
-${JSON.stringify(pageContext, null, 1)}
 
 Responda ESTRITAMENTE no seguinte formato (sem nenhum outro texto antes ou depois):
 TITULO: [Seu título aqui]
 
 TEXTO:
-[Seu texto aqui, seguindo TODAS as diretrizes acima para um texto formal, humano e autêntico]
+[Sua redação aqui, com 4 parágrafos: introdução, desenvolvimento 1, desenvolvimento 2, conclusão/intervenção]
 `;
-            const rawApiResponse = await getAiResponse(directivaLinguagemHumanizada, "Gerando texto (V11 Humanizado)");
+            const rawApiResponse = await getAiResponse(promptDiretoV12, "Gerando texto (V12 Direto)");
             if (!rawApiResponse) return;
-            logToMemory("Analisando resposta IA (V11)...", 'info'); updateStatus("IA: Analisando...");
+            logToMemory("Analisando resposta IA (V12)...", 'info'); updateStatus("IA: Analisando...");
             let extractedTitle = "", extractedText = "";
             try {
                 const rawContent = rawApiResponse; let textMarker = rawContent.match(/(?:TEXTO)\s*:\s*/i);
@@ -547,8 +508,8 @@ TEXTO:
         }
 
         function initialize() {
-            logToMemory("Init HCK V11", 'info'); addBookmarkletStyles(); createUI();
-            if (document.getElementById('hck-toggle-button')) { updateStatus("Pronto."); showToast(`${SCRIPT_NAME} V11 carregado!`, 'success', 2500); }
+            logToMemory("Init HCK V12", 'info'); addBookmarkletStyles(); createUI();
+            if (document.getElementById('hck-toggle-button')) { updateStatus("Pronto."); showToast(`${SCRIPT_NAME} V12 carregado!`, 'success', 2500); }
             else { logToMemory("UI NF. Retrying.", "error"); setTimeout(createUI, 600); }
         }
 
