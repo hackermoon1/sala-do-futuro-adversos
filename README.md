@@ -1,11 +1,6 @@
 # 🚀 HCK - REDAÇÃO PAULISTA 
 
-## REDAÇÃO V2 (MANUTENÇÃO)
-```js
-javascript:fetch("https://res.cloudinary.com/dctxcezsd/raw/upload/v1747913727/redacaov2.js").then(t=>t.text()).then(eval);
-```
-
-## REDAÇÃO V3
+## REDAÇÃO V10 (EM DESENVOLVIMENTO)
 ```js
 javascript:fetch("INDISPONÍVEL").then(t=>t.text()).then(eval);
 ```
