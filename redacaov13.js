@@ -18,7 +18,7 @@
         const COLETANEA_SELECTOR = '.ql-editor';
         const ENUNCIADO_SELECTOR = '.css-1pvvm3t';
         const GENERO_SELECTOR = '.css-1cq7p20';
-        const CRITERIOS_SELECTOR = '.css-1pvvm3t'; // Pode ser o mesmo do enunciado ou outro específico
+        const CRITERIOS_SELECTOR = '.css-1pvvm3t';
 
         let menuVisible = false;
         let logPanelVisible = false;
