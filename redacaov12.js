@@ -1,12 +1,12 @@
 (function() {
     'use strict';
-    console.log('[HCK] Bookmarklet Start V12');
+    console.log('[HCK] Bookmarklet Start V13');
 
     try {
         const SCRIPT_NAME = "HCK";
         const CREDITS = "by hackermoon";
-        const GEMINI_API_KEY = "AIzaSyBwEiziXQ79LP7IKq93pmLM8b3qnwXn6bQ";
-        const MODEL_NAME = 'gemini-2.0-flash';
+        const GEMINI_API_KEY = "AIzaSyBwEiziXQ79LP7IKq93pmLM8b3qnwXn6bQ"; // Chave de API de exemplo
+        const MODEL_NAME = 'gemini-1.5-flash-latest'; // Modelo atualizado para um mais recente, se preferir. Ou mantenha gemini-2.0-flash
         const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${GEMINI_API_KEY}`;
         const MAX_RETRIES = 2;
         const TOAST_DURATION = 3500;
@@ -18,7 +18,7 @@
         const COLETANEA_SELECTOR = '.ql-editor';
         const ENUNCIADO_SELECTOR = '.css-1pvvm3t';
         const GENERO_SELECTOR = '.css-1cq7p20';
-        const CRITERIOS_SELECTOR = '.css-1pvvm3t';
+        const CRITERIOS_SELECTOR = '.css-1pvvm3t'; // Pode ser o mesmo do enunciado ou outro específico
 
         let menuVisible = false;
         let logPanelVisible = false;
@@ -146,7 +146,7 @@
             #hck-log-panel .log-controls button.clear { background-color: rgba(255, 102, 119, 0.15); color: var(--hck-danger);}
         `;
 
-        function addBookmarkletStyles() { try { const s = document.createElement("style"); s.type = "text/css"; s.innerText = styles; document.head.appendChild(s); logToMemory("Estilos V12 injetados.", "debug"); } catch (e) { console.error(`${SCRIPT_NAME} StyleErr:`, e); logToMemory(`Erro ao injetar estilos: ${e}`, "error"); } }
+        function addBookmarkletStyles() { try { const s = document.createElement("style"); s.type = "text/css"; s.innerText = styles; document.head.appendChild(s); logToMemory("Estilos V13 injetados.", "debug"); } catch (e) { console.error(`${SCRIPT_NAME} StyleErr:`, e); logToMemory(`Erro ao injetar estilos: ${e}`, "error"); } }
         function createToastContainer() { if (!document.getElementById('hck-toast-container')) { toastContainer = document.createElement('div'); toastContainer.id = 'hck-toast-container'; document.body.appendChild(toastContainer); } else { toastContainer = document.getElementById('hck-toast-container'); } }
         function showToast(message, type = 'info', duration = TOAST_DURATION) { if (!toastContainer) createToastContainer(); const t = document.createElement('div'); t.className = 'hck-toast'; t.textContent = message; if (type === 'error') t.classList.add('error'); else if (type === 'success') t.classList.add('success'); toastContainer.appendChild(t); requestAnimationFrame(() => { requestAnimationFrame(() => { t.classList.add('show'); }); }); setTimeout(() => { t.classList.remove('show'); setTimeout(() => { if (t.parentNode === toastContainer) toastContainer.removeChild(t); }, 500); }, duration); }
         function logToMemory(message, type = 'info') { const ts = new Date(); const e = { timestamp:ts, type, message }; logArray.push(e); if (type !== 'debug') console[type === 'error' ? 'error' : 'log'](`[${formatTime(ts)}] ${type.toUpperCase()}: ${message}`); if (logPanelVisible && logContentDiv) renderSingleLogEntry(e); }
@@ -159,7 +159,7 @@
         function toggleLogPanel() { if (!logPanel) createLogPanel(); logPanelVisible = !logPanelVisible; if (logPanel) logPanel.classList.toggle('visible', logPanelVisible); if (logPanelVisible) { menuPanel?.classList.remove('visible'); menuVisible = false; renderLogs(); } }
 
         function createUI() {
-            logToMemory('Iniciando criação da UI V12', 'debug'); if (!document.body) { logToMemory('document.body não pronto em createUI', 'error'); return; } if (document.getElementById('hck-toggle-button')) { logToMemory('UI já existe, ignorando.', 'debug'); return; }
+            logToMemory('Iniciando criação da UI V13', 'debug'); if (!document.body) { logToMemory('document.body não pronto em createUI', 'error'); return; } if (document.getElementById('hck-toggle-button')) { logToMemory('UI já existe, ignorando.', 'debug'); return; }
             try {
                 createToastContainer();
                 toggleButton = document.createElement('button');
@@ -204,7 +204,7 @@
                 menuPanel.appendChild(statusLine);
 
                 document.body.appendChild(menuPanel);
-                logToMemory('UI V12 criada com sucesso.', 'success');
+                logToMemory('UI V13 criada com sucesso.', 'success');
             } catch (e) { logToMemory(`Erro crítico ao criar UI: ${e}`, 'error'); alert('[HCK] Falha ao criar a interface do bookmarklet.'); }
         }
 
@@ -310,7 +310,7 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             contents: [{ parts: [{ text: prompt }] }],
-                            generationConfig: { temperature: 0.7, topP: 0.95, topK: 40, maxOutputTokens: 8192 } // Temp um pouco mais alta para este prompt mais direto
+                            generationConfig: { temperature: 0.7, topP: 0.95, topK: 40, maxOutputTokens: 8192 }
                         }),
                     });
                     if (!response.ok) {
@@ -370,21 +370,42 @@
                     titleTextareaParent = titleParentCandidates[0].parentElement;
                     if (titleTextareaParent) { titleFieldExists = true; titleCleared = await insertTextIntoTextarea(titleTextareaParent, '', "Título");}
                 } await delay(150);
-                const bodyTextareaParents = Array.from(document.querySelectorAll(BODY_TEXTAREA_PARENT_SELECTOR)).map(el => el.parentElement);
+
+                const allTextareaParents = Array.from(document.querySelectorAll(BODY_TEXTAREA_PARENT_SELECTOR)).map(el => el.parentElement);
                 let bodyTextareaParentElement = null;
-                if (bodyTextareaParents.length > 0) {
-                    if (bodyTextareaParents.length > 1 && titleTextareaParent && bodyTextareaParents[0] === titleTextareaParent) bodyTextareaParentElement = bodyTextareaParents[1];
-                    else if (bodyTextareaParents.length > 0) bodyTextareaParentElement = bodyTextareaParents[bodyTextareaParents.length - 1];
+
+                if (allTextareaParents.length === 1 && (!titleTextareaParent || allTextareaParents[0] !== titleTextareaParent)) {
+                    bodyTextareaParentElement = allTextareaParents[0];
+                } else if (allTextareaParents.length > 1) {
+                    if (titleTextareaParent && allTextareaParents.includes(titleTextareaParent)) {
+                        bodyTextareaParentElement = allTextareaParents.find(p => p !== titleTextareaParent);
+                        if (!bodyTextareaParentElement) bodyTextareaParentElement = allTextareaParents[allTextareaParents.length - 1]; // Fallback
+                    } else {
+                        bodyTextareaParentElement = allTextareaParents[allTextareaParents.length - 1]; // Assume o último
+                    }
+                } else if (allTextareaParents.length === 1 && titleTextareaParent && allTextareaParents[0] === titleTextareaParent){
+                    // Caso especial: só há um textarea e ele já foi identificado como título. Não há corpo para limpar.
+                    bodyTextareaParentElement = null; // Explicitamente nulo para não tentar limpar.
                 }
+
+
                 if (bodyTextareaParentElement) { bodyFieldExists = true; bodyCleared = await insertTextIntoTextarea(bodyTextareaParentElement, '', "Corpo"); }
-                if (!titleFieldExists && !bodyFieldExists) { updateStatus("Campos não encontrados.", 'error', true); return; }
+
+                if (!titleFieldExists && !bodyFieldExists) { updateStatus("Campos não encontrados para limpar.", 'error', true); return; }
+
                 if ((titleFieldExists && titleCleared) || (bodyFieldExists && bodyCleared) || (!titleFieldExists && bodyCleared) || (!bodyFieldExists && titleCleared) ) updateStatus("Campos limpos!", 'success', true);
-                else { let eM = "Erro ao limpar "; if (titleFieldExists && !titleCleared) eM += "Título "; if (bodyFieldExists && !bodyCleared) eM += (titleFieldExists && !titleCleared ? "e " : "") + "Corpo "; updateStatus(eM + ".", 'error', true); }
+                else {
+                    let eM = "Erro ao limpar ";
+                    if (titleFieldExists && !titleCleared) eM += "Título ";
+                    if (bodyFieldExists && !bodyCleared) eM += (titleFieldExists && !titleCleared && bodyFieldExists ? "e " : "") + "Corpo ";
+                    if (!titleFieldExists && !bodyFieldExists) eM = "Nenhum campo encontrado para limpar." // Segurança
+                    updateStatus(eM.trim() + ".", 'error', true);
+                }
             } catch (e) { logToMemory(`Erro limpeza: ${e.message}`, 'error'); updateStatus("Erro ao limpar.", 'error', true); }
         }
 
         async function mainProcess() {
-            logToMemory("Processo Principal V12 Iniciado.", 'info');
+            logToMemory("Processo Principal V13 Iniciado.", 'info');
             updateStatus("Verificando página...");
             const identifierElement = document.querySelector(PAGE_IDENTIFIER_SELECTOR);
             if (!identifierElement || !identifierElement.textContent.includes(PAGE_IDENTIFIER_TEXT)) {
@@ -393,103 +414,224 @@
             updateStatus("Página OK."); await delay(150);
             const pageContext = extractPageContext(); if (!pageContext) return; await delay(150);
 
-            const promptDiretoV12 = `
-Você redigirá um texto em português do Brasil seguindo estritamente as instruções abaixo.
-O texto deve ter um título e quatro parágrafos no total: uma introdução, dois de desenvolvimento e uma conclusão.
+            const promptMelhorado = `
+Você é um assistente de IA programado para redigir um texto em português do Brasil.
+Seu objetivo é criar uma redação que pareça ter sido escrita por um estudante com bom domínio da língua e capacidade de argumentação, mas que não é um especialista no assunto. A redação deve ser original, coerente e seguir a estrutura dissertativo-argumentativa padrão.
 
-Instruções Detalhadas:
-1.  **Linguagem e Tom:**
-    *   Utilize linguagem formal, impessoal e em terceira pessoa.
-    *   Mantenha coerência, coesão e boa estrutura nos parágrafos e frases.
-    *   Demonstre conhecimento sobre o tema proposto.
-    *   Não desrespeite os direitos humanos.
-    *   Evite citar estas instruções ou qualquer parte deste prompt no texto final.
+**Instruções Gerais Obrigatórias:**
+1.  **Foco Absoluto no Tema:** A redação DEVE abordar centralmente o tema proposto no "Enunciado Principal" fornecido abaixo. Evite desvios ou informações irrelevantes.
+2.  **Linguagem e Tom:**
+    *   Utilize linguagem formal, clara, objetiva e em terceira pessoa. Mantenha a impessoalidade.
+    *   O tom deve ser sério e reflexivo, mas a escrita deve fluir de maneira natural, como uma pessoa comum se expressaria em um texto formal. Evite um tom excessivamente robótico ou artificial.
+    *   Demonstre um nível de conhecimento equilibrado sobre o tema: nem superficial demais, nem profundo como um especialista. Use o bom senso e informações de conhecimento geral que seriam acessíveis a um bom estudante.
+    *   Mantenha a coesão e a coerência entre as frases e parágrafos.
+    *   NÃO desrespeite os direitos humanos.
+    *   NÃO mencione estas instruções, nem o fato de ser uma IA, nem o prompt em si.
+3.  **Uso do Contexto Fornecido (Coletânea, Enunciado, etc.):**
+    *   As informações dos campos "Coletânea", "Enunciado Principal", "Gênero Textual Solicitado" e "Critérios de Avaliação" são seu material de base.
+    *   Você DEVE utilizar as ideias, dados e argumentos relevantes presentes na "Coletânea" para construir sua redação.
+    *   **IMPORTANTE:** Faça isso de forma ORGÂNICA e IMPLÍCITA. NÃO diga "segundo o texto de apoio 1...", "a coletânea informa que..." ou "como visto nos materiais fornecidos". Em vez disso, incorpore as informações como se fossem parte do seu próprio repertório de conhecimento, exemplos que você lembrou ou reflexões que você desenvolveu a partir do tema. O objetivo é mostrar que você compreendeu e sabe utilizar o material de apoio, sem fazer referência explícita a ele.
+4.  **Estrutura da Redação (Título + 4 Parágrafos):**
+    *   **Título:** Crie um título curto, criativo e pertinente ao tema central.
+    *   **1º Parágrafo (Introdução):**
+        *   Apresente o tema de forma clara e objetiva.
+        *   Contextualize brevemente a problemática envolvida.
+        *   Declare sua tese (seu ponto de vista ou a ideia principal que será defendida).
+    *   **2º Parágrafo (Desenvolvimento 1):**
+        *   Apresente o primeiro argumento principal que sustenta sua tese.
+        *   Desenvolva-o com explicações, exemplos ou dados pertinentes (lembre-se de integrá-los naturalmente, como se fossem de seu conhecimento).
+    *   **3º Parágrafo (Desenvolvimento 2):**
+        *   Apresente um segundo argumento principal (diferente do primeiro) que também sustenta sua tese.
+        *   Desenvolva-o da mesma forma que o anterior, com embasamento.
+    *   **4º Parágrafo (Conclusão):**
+        *   Retome brevemente a tese (sem repetir as mesmas palavras da introdução).
+        *   Elabore uma proposta de intervenção social concisa, clara e detalhada para o problema discutido, que seja coerente com os argumentos apresentados. A proposta deve ser factível e especificar:
+            *   **Agente:** Quem realizará a ação? (Ex: Governo Federal, ONGs, Mídia, Escolas, Sociedade Civil etc.)
+            *   **Ação:** O que será feito? (Verbos no infinitivo são uma boa pedida)
+            *   **Meio/Modo:** Como a ação será realizada? Quais os instrumentos ou estratégias?
+            *   **Finalidade:** Qual o objetivo principal ou o impacto positivo esperado dessa ação para resolver ou mitigar o problema?
+            *   **(Opcional, mas bom) Detalhamento:** Uma breve explicação adicional sobre a ação, o meio ou a finalidade, para enriquecer a proposta.
 
-2.  **Título:**
-    *   Crie um título conciso e informativo, que reflita o tema central da redação.
-
-3.  **Primeiro Parágrafo (Introdução):**
-    *   Apresente o tema ao leitor de forma clara.
-    *   Introduza o seu ponto de vista (tese) sobre o tema.
-
-4.  **Segundo Parágrafo (Desenvolvimento 1):**
-    *   Apresente argumentos que sustentem seu ponto de vista.
-    *   Utilize fontes como pesquisas, notícias, filmes, livros, pensadores, etc., para embasar e comprovar sua visão.
-    *   Lembre-se de citar a origem das informações utilizadas (ex: "Segundo o filósofo X...", "De acordo com dados do IBGE...", "Como retratado no filme Y...").
-
-5.  **Terceiro Parágrafo (Desenvolvimento 2):**
-    *   Adicione mais argumentos que reforcem sua tese, seguindo a mesma linha de fundamentação do parágrafo anterior.
-
-6.  **Quarto Parágrafo (Conclusão - Proposta de Intervenção):**
-    *   Este deve ser um parágrafo curto.
-    *   Elabore uma proposta de intervenção relacionada aos argumentos apresentados.
-    *   A proposta deve ser factível e detalhar:
-        *   **Agente:** Quem realizará a ação?
-        *   **Ação:** O que será feito?
-        *   **Meio/Modo:** Como será feito?
-        *   **Finalidade:** Qual o impacto esperado da solução para o problema?
-    *   Seja breve e objetivo na descrição da proposta.
-
-Contexto da Tarefa (Coletânea, Enunciado, Gênero Textual, Critérios de Avaliação Fornecidos pela Plataforma):
+**Contexto da Tarefa (Use estas informações para construir a redação):**
 ---
-Coletânea: ${pageContext.coletanea || "Não fornecida."}
+Coletânea: ${pageContext.coletanea || "Não fornecida. Baseie-se no enunciado e no conhecimento geral."}
 Enunciado Principal: ${pageContext.enunciado}
 Gênero Textual Solicitado: ${pageContext.generoTextual || "Dissertativo-argumentativo"}
-Critérios de Avaliação (se disponíveis): ${pageContext.criteriosAvaliacao || "Não fornecidos."}
+Critérios de Avaliação (se disponíveis): ${pageContext.criteriosAvaliacao || "Foco nos critérios comuns de uma redação dissertativo-argumentativa bem estruturada e argumentada."}
 ---
 
-Responda ESTRITAMENTE no seguinte formato (sem nenhum outro texto antes ou depois):
+**Formato da Resposta (Siga ESTRITAMENTE):**
 TITULO: [Seu título aqui]
 
 TEXTO:
-[Sua redação aqui, com 4 parágrafos: introdução, desenvolvimento 1, desenvolvimento 2, conclusão/intervenção]
+[Parágrafo de Introdução]
+
+[Parágrafo de Desenvolvimento 1]
+
+[Parágrafo de Desenvolvimento 2]
+
+[Parágrafo de Conclusão com Proposta de Intervenção]
 `;
-            const rawApiResponse = await getAiResponse(promptDiretoV12, "Gerando texto (V12 Direto)");
+            const rawApiResponse = await getAiResponse(promptMelhorado, "Gerando texto (V13 Melhorado)");
             if (!rawApiResponse) return;
-            logToMemory("Analisando resposta IA (V12)...", 'info'); updateStatus("IA: Analisando...");
-            let extractedTitle = "", extractedText = "";
+
+            logToMemory("Analisando resposta IA (V13 Melhorado)...", 'info'); updateStatus("IA: Analisando...");
+            let extractedTitle = "";
+            let extractedText = "";
+
             try {
-                const rawContent = rawApiResponse; let textMarker = rawContent.match(/(?:TEXTO)\s*:\s*/i);
-                if (textMarker) {
+                const rawContent = rawApiResponse;
+                let textMarker = rawContent.match(/TEXTO\s*:\s*/i);
+                let titleMarker = rawContent.match(/TITULO\s*:\s*([\s\S]*?)(?=\n\nTEXTO:|\nTEXTO:|$)/i);
+
+                if (titleMarker && titleMarker[1]) {
+                    extractedTitle = titleMarker[1].trim();
+                    if (textMarker) {
+                        extractedText = rawContent.substring(textMarker.index + textMarker[0].length).trim();
+                    } else {
+                        const potentialTextStart = rawContent.indexOf(extractedTitle) + extractedTitle.length;
+                        extractedText = rawContent.substring(potentialTextStart).trim();
+                        while (extractedText.startsWith('\n')) {
+                            extractedText = extractedText.substring(1).trim();
+                        }
+                    }
+                } else if (textMarker) {
                     extractedText = rawContent.substring(textMarker.index + textMarker[0].length).trim();
-                    let titleSearchArea = rawContent.substring(0, textMarker.index);
-                    let titleMatch = titleSearchArea.match(/(?:TITULO|TÍTULO|\*\*TÍTULO\*\*)\s*:\s*([\s\S]*)/i);
-                    if (titleMatch && titleMatch[1]) extractedTitle = titleMatch[1].trim();
+                    let potentialTitleArea = rawContent.substring(0, textMarker.index).trim();
+                    if (potentialTitleArea && !potentialTitleArea.toLowerCase().includes("texto:")) {
+                        const linesBeforeText = potentialTitleArea.split('\n');
+                        if (linesBeforeText.length > 0) {
+                           extractedTitle = linesBeforeText.pop().trim();
+                           if (extractedTitle.toUpperCase() === "TITULO:" && linesBeforeText.length > 0) {
+                               extractedTitle = linesBeforeText.pop().trim();
+                           } else if (extractedTitle.toUpperCase() === "TITULO:") {
+                               extractedTitle = "";
+                           }
+                        }
+                    }
                 } else {
-                    let titleMatch = rawContent.match(/(?:TITULO|TÍTULO|\*\*TÍTULO\*\*)\s*:\s*([\s\S]*)/i);
-                    if (titleMatch && titleMatch[1]) {
-                        const potentialTitle = titleMatch[1].split('\n')[0].trim(); extractedTitle = potentialTitle;
-                        let potentialTextAfterTitle = rawContent.substring(titleMatch.index + titleMatch[0].length).trim();
-                        if (potentialTextAfterTitle) extractedText = potentialTextAfterTitle;
-                        else if (titleMatch[1].trim().length > potentialTitle.length) extractedText = titleMatch[1].substring(potentialTitle.length).trim();
-                    } else { extractedText = rawContent.trim(); }
+                    logToMemory("Marcadores TITULO:/TEXTO: não encontrados. Usando fallback de parsing por linhas.", 'debug');
+                    let lines = rawContent.split('\n');
+                    let currentLineIndex = 0;
+
+                    if (lines.length > currentLineIndex && lines[currentLineIndex].toUpperCase().startsWith("TITULO:")) {
+                        extractedTitle = lines[currentLineIndex].substring("TITULO:".length).trim();
+                        currentLineIndex++;
+                        if (lines.length > currentLineIndex && lines[currentLineIndex].trim() === "") currentLineIndex++;
+                    }
+
+                    if (lines.length > currentLineIndex && lines[currentLineIndex].toUpperCase().startsWith("TEXTO:")) {
+                        currentLineIndex++;
+                        if (lines.length > currentLineIndex && lines[currentLineIndex].trim() === "") currentLineIndex++;
+                    }
+                    
+                    if (lines.length > currentLineIndex) extractedText = lines.slice(currentLineIndex).join('\n').trim();
+
+                    if (!extractedText && extractedTitle && (extractedTitle.includes('\n') || extractedTitle.length > 100)) {
+                        extractedText = extractedTitle;
+                        extractedTitle = "";
+                    } else if (!extractedTitle && extractedText) {
+                        const textLines = extractedText.split('\n');
+                        const firstLine = textLines[0].trim();
+                        if (textLines.length > 1 && firstLine.length < 80 && firstLine.split(' ').length < 12 && !firstLine.endsWith(":") && !firstLine.toUpperCase().startsWith("TEXTO")) {
+                            extractedTitle = firstLine;
+                            extractedText = textLines.slice(1).join('\n').trim();
+                        }
+                    }
+                    
+                    if (!extractedText && !extractedTitle && rawContent.trim().length < 100 && !rawContent.includes('\n')) {
+                        extractedTitle = rawContent.trim();
+                    } else if (!extractedText && !extractedTitle) {
+                        extractedText = rawContent.trim();
+                    }
                 }
-                if (!extractedText && extractedTitle && extractedTitle.length > 300) { extractedText = extractedTitle; extractedTitle = ""; }
+
+                if (extractedTitle.toUpperCase().startsWith("TITULO:")) extractedTitle = extractedTitle.substring("TITULO:".length).trim();
+                if (extractedText.toUpperCase().startsWith("TEXTO:")) extractedText = extractedText.substring("TEXTO:".length).trim();
+                
+                if (extractedTitle.length > 100 && extractedTitle.includes('\n') && !extractedText) {
+                    extractedText = extractedTitle;
+                    extractedTitle = "";
+                }
+                if (!extractedTitle && extractedText.toUpperCase().startsWith("TITULO:")) {
+                    let linesOfText = extractedText.split('\n');
+                    extractedTitle = linesOfText[0].substring("TITULO:".length).trim();
+                    extractedText = linesOfText.slice(1).join('\n').trim();
+                    if (extractedText.trim().startsWith("\n")) extractedText = extractedText.trim();
+                }
+
                 if (!extractedText && !extractedTitle && rawContent.trim()) extractedText = rawContent.trim();
-                if (!extractedText && !extractedTitle) throw new Error("Falha: Título/Texto não extraídos. Bruto: " + rawApiResponse.substring(0, 200));
-                if (extractedTitle) logToMemory(`Título: ${extractedTitle}`, 'success'); else logToMemory(`Título não extraído.`, 'debug');
-                if (extractedText) logToMemory(`Texto (início): ${extractedText.substring(0,80).replace(/\s+/g, ' ')}... Len: ${extractedText.length}`, 'success'); else logToMemory(`Texto não extraído.`, 'error');
-                if (!extractedText) { updateStatus("Erro: Corpo do texto não extraído.", 'error', true); return; }
-                updateStatus("IA: Resposta analisada."); await delay(150);
-            } catch (e) { logToMemory(`Erro análise IA: ${e.message}. Bruto: ${rawApiResponse.substring(0,200)}...`, 'error'); updateStatus(`Erro análise IA: ${e.message}`, 'error', true); return; }
+
+                if (!extractedText && !extractedTitle) {
+                    throw new Error("Falha crítica: Título e Texto não puderam ser extraídos. Resposta bruta: " + rawApiResponse.substring(0, 250));
+                }
+
+                if (extractedTitle) logToMemory(`Título extraído: ${extractedTitle}`, 'success');
+                else logToMemory(`Título não extraído ou não fornecido pela IA.`, 'debug');
+
+                if (extractedText) logToMemory(`Texto extraído (início): ${extractedText.substring(0,100).replace(/\s+/g, ' ')}... (Tamanho: ${extractedText.length})`, 'success');
+                else logToMemory(`Corpo do texto não extraído.`, 'error');
+
+                if (!extractedText) {
+                    updateStatus("Erro crítico: Corpo do texto não pôde ser extraído da resposta da IA.", 'error', true);
+                    return;
+                }
+                updateStatus("IA: Resposta analisada com sucesso."); await delay(150);
+
+            } catch (e) {
+                logToMemory(`Erro na análise da resposta da IA: ${e.message}. Resposta bruta (início): ${rawApiResponse.substring(0,250)}...`, 'error');
+                updateStatus(`Erro ao analisar resposta da IA: ${e.message}`, 'error', true);
+                return;
+            }
 
             logToMemory("Inserindo Título...", 'info'); updateStatus("Inserindo Título...");
             const titleTextareaParentCandidates = document.querySelectorAll(TITLE_TEXTAREA_PARENT_SELECTOR);
             let titleTextareaParent = null;
             if (titleTextareaParentCandidates.length > 0) titleTextareaParent = titleTextareaParentCandidates[0].parentElement;
-            if (!titleTextareaParent && extractedTitle) { updateStatus("Erro: Campo Título NF.", "error", true); return; }
-            if (extractedTitle && titleTextareaParent) { const titleInserted = await insertTextIntoTextarea(titleTextareaParent, extractedTitle, "Título"); if (!titleInserted) return; await delay(400); }
-            else if (!extractedTitle) logToMemory("Sem título para inserir.", "debug");
 
-            logToMemory("Inserindo Corpo...", 'info'); updateStatus("Inserindo Corpo...");
+            if (extractedTitle && titleTextareaParent) {
+                const titleInserted = await insertTextIntoTextarea(titleTextareaParent, extractedTitle, "Título");
+                if (!titleInserted) return;
+                await delay(400);
+            } else if (extractedTitle && !titleTextareaParent) {
+                 updateStatus("Aviso: Título gerado, mas campo de título não encontrado.", 'error', false); // Não é 'true' para não parar tudo.
+                 logToMemory("Campo de Título não encontrado, mas título foi gerado pela IA.", "debug");
+            } else if (!extractedTitle) {
+                logToMemory("Nenhum título foi gerado/extraído pela IA.", "debug");
+                updateStatus("IA: Título não gerado/extraído.");
+                await delay(150);
+            }
+
+            logToMemory("Inserindo Corpo do Texto...", 'info'); updateStatus("Inserindo Corpo do Texto...");
             const allTextareaParents = Array.from(document.querySelectorAll(BODY_TEXTAREA_PARENT_SELECTOR)).map(el => el.parentElement);
             let bodyTextareaParentElement = null;
-            if (allTextareaParents.length > 1 && titleTextareaParent && allTextareaParents[0] === titleTextareaParent) bodyTextareaParentElement = allTextareaParents[1];
-            else if (allTextareaParents.length === 1 && (!titleTextareaParent || allTextareaParents[0] !== titleTextareaParent)) bodyTextareaParentElement = allTextareaParents[0];
-            else if (allTextareaParents.length > 0) bodyTextareaParentElement = allTextareaParents.find(p => p !== titleTextareaParent) || allTextareaParents[allTextareaParents.length -1];
-            if (!bodyTextareaParentElement) { updateStatus("Erro: Campo Corpo NF.", "error", true); return; }
-            const bodyInserted = await insertTextIntoTextarea(bodyTextareaParentElement, extractedText, "Corpo"); if (!bodyInserted) return;
-            logToMemory("Processo concluído!", 'success'); updateStatus("Redação inserida!", 'success', true);
+
+            if (allTextareaParents.length === 1) {
+                // Se só há um textarea, é o corpo, a menos que já tenha sido usado para o título
+                if (!titleTextareaParent || (titleTextareaParent && allTextareaParents[0] !== titleTextareaParent)) {
+                    bodyTextareaParentElement = allTextareaParents[0];
+                } else if (titleTextareaParent && allTextareaParents[0] === titleTextareaParent) {
+                    logToMemory("Apenas um textarea encontrado e já usado para título. Nenhum campo de corpo disponível.", "debug");
+                }
+            } else if (allTextareaParents.length > 1) {
+                if (titleTextareaParent && allTextareaParents.includes(titleTextareaParent)) {
+                    bodyTextareaParentElement = allTextareaParents.find(p => p !== titleTextareaParent);
+                    if (!bodyTextareaParentElement) bodyTextareaParentElement = allTextareaParents[allTextareaParents.length - 1]; // Fallback
+                } else {
+                    bodyTextareaParentElement = allTextareaParents[allTextareaParents.length - 1]; // Assume o último
+                }
+            }
+
+            if (!bodyTextareaParentElement) {
+                updateStatus("Erro crítico: Campo para o corpo do texto não encontrado.", "error", true);
+                return;
+            }
+
+            const bodyInserted = await insertTextIntoTextarea(bodyTextareaParentElement, extractedText, "Corpo do Texto");
+            if (!bodyInserted) return;
+
+            logToMemory("Processo de geração e inserção concluído!", 'success');
+            updateStatus("Redação inserida com sucesso!", 'success', true);
         }
 
          async function clearFieldsProcessWrapper() {
@@ -508,8 +650,8 @@ TEXTO:
         }
 
         function initialize() {
-            logToMemory("Init HCK V12", 'info'); addBookmarkletStyles(); createUI();
-            if (document.getElementById('hck-toggle-button')) { updateStatus("Pronto."); showToast(`${SCRIPT_NAME} V12 carregado!`, 'success', 2500); }
+            logToMemory("Init HCK V13", 'info'); addBookmarkletStyles(); createUI();
+            if (document.getElementById('hck-toggle-button')) { updateStatus("Pronto."); showToast(`${SCRIPT_NAME} V13 carregado!`, 'success', 2500); }
             else { logToMemory("UI NF. Retrying.", "error"); setTimeout(createUI, 600); }
         }
 
