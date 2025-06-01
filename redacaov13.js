@@ -5,8 +5,8 @@
     try {
         const SCRIPT_NAME = "HCK";
         const CREDITS = "by hackermoon";
-        const GEMINI_API_KEY = "AIzaSyBwEiziXQ79LP7IKq93pmLM8b3qnwXn6bQ"; // Chave de API de exemplo
-        const MODEL_NAME = 'gemini-1.5-flash-latest'; // Modelo atualizado para um mais recente, se preferir. Ou mantenha gemini-2.0-flash
+        const GEMINI_API_KEY = "AIzaSyBwEiziXQ79LP7IKq93pmLM8b3qnwXn6bQ";
+        const MODEL_NAME = 'gemini-1.5-flash-latest';
         const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${GEMINI_API_KEY}`;
         const MAX_RETRIES = 2;
         const TOAST_DURATION = 3500;
