@@ -1,3 +1,3 @@
 # 🚀 HCK - REDAÇÃO PAULISTA 
 
-## MANUTENÇÃO...
+## VOU DAR UMA ARRUMADA
